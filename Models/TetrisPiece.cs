@@ -2,7 +2,7 @@ namespace Tetris.Models;
 
 public class TetrisPiece
 {
-    public int[,] Shape { get; private set; }
+    public int[,] Shape { get; set; }
 
     public int X { get; set; }
     public int Y { get; set; }
