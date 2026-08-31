@@ -19,6 +19,7 @@ public partial class MainWindow : Window
     private readonly Random random = new();
 
     private TetrisPiece currentPiece;
+    private int score;
 
     public MainWindow()
     {
@@ -38,6 +39,8 @@ public partial class MainWindow : Window
         KeyDown += MainWindow_KeyDown;
 
         Focus();
+
+        UpdateScore();
 
         DrawBoard();
 
@@ -72,6 +75,7 @@ public partial class MainWindow : Window
         else
         {
             LockPiece();
+            ClearCompletedLines();
             SpawnNewPiece();
         }
 
@@ -177,6 +181,73 @@ public partial class MainWindow : Window
                 }
             }
         }
+    }
+
+    private void ClearCompletedLines()
+    {
+        int linesCleared = 0;
+
+        for (int y = GridHeight - 1; y >= 0; y--)
+        {
+            if (IsLineFull(y))
+            {
+                RemoveLine(y);
+                linesCleared++;
+                y++;
+            }
+        }
+
+        AddScore(linesCleared);
+    }
+
+    private bool IsLineFull(int y)
+    {
+        for (int x = 0; x < GridWidth; x++)
+        {
+            if (grid[x, y] == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void RemoveLine(int line)
+    {
+        for (int y = line; y > 0; y--)
+        {
+            for (int x = 0; x < GridWidth; x++)
+            {
+                grid[x, y] = grid[x, y - 1];
+                gridColors[x, y] = gridColors[x, y - 1];
+            }
+        }
+
+        for (int x = 0; x < GridWidth; x++)
+        {
+            grid[x, 0] = 0;
+            gridColors[x, 0] = default;
+        }
+    }
+
+    private void AddScore(int linesCleared)
+    {
+        score += linesCleared switch
+        {
+            1 => 100,
+            2 => 300,
+            3 => 500,
+            4 => 800,
+            _ => 0
+        };
+
+        UpdateScore();
+    }
+
+    private void UpdateScore()
+    {
+        ScoreText.Text = $"Score: {score}";
     }
 
     private void SpawnNewPiece()

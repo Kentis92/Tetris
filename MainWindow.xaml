@@ -2,14 +2,27 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Tetris"
-        Width="320"
-        Height="640"
+        Width="340"
+        Height="700"
         Background="Black">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="ScoreText"
+                   Grid.Row="0"
+                   Text="Score: 0"
+                   Foreground="White"
+                   FontSize="24"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+
         <UniformGrid x:Name="GameBoard"
+                     Grid.Row="1"
                      Rows="20"
                      Columns="10"
-                     Margin="10">
-        </UniformGrid>
+                     Margin="10"/>
     </Grid>
 </Window>
