@@ -1,23 +1,35 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Tetris;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
+    private const int GridWidth = 10;
+    private const int GridHeight = 20;
+
     public MainWindow()
     {
         InitializeComponent();
+        CreateGameBoard();
+    }
+
+    private void CreateGameBoard()
+    {
+        for (int y = 0; y < GridHeight; y++)
+        {
+            for (int x = 0; x < GridWidth; x++)
+            {
+                Border cell = new Border
+                {
+                    Background = Brushes.Black,
+                    BorderBrush = Brushes.Gray,
+                    BorderThickness = new Thickness(1)
+                };
+
+                GameBoard.Children.Add(cell);
+            }
+        }
     }
 }
