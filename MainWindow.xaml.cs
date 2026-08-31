@@ -17,9 +17,12 @@ public partial class MainWindow : Window
     private readonly TetrominoType[,] gridColors = new TetrominoType[GridWidth, GridHeight];
     private readonly DispatcherTimer gameTimer;
     private readonly Random random = new();
+    private readonly HighScoreManager highScoreManager = new();
 
     private TetrisPiece currentPiece = null!;
+    private TetrisPiece nextPiece = null!;
     private int score;
+    private int highScore;
     private bool gameOver;
 
     public MainWindow()
@@ -27,6 +30,7 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         CreateGameBoard();
+        CreateNextPiecePreview();
 
         gameTimer = new DispatcherTimer
         {
@@ -37,11 +41,65 @@ public partial class MainWindow : Window
 
         KeyDown += MainWindow_KeyDown;
 
-        Focus();
+        highScore = highScoreManager.LoadHighScore();
 
+        UpdateHighScore();
+
+        ShowMainMenu();
+    }
+
+    private void PlayButton_Click(object sender, RoutedEventArgs e)
+    {
+        ShowGame();
         StartNewGame();
-
         gameTimer.Start();
+        Focus();
+    }
+
+    private void OptionsButton_Click(object sender, RoutedEventArgs e)
+    {
+        MainMenuScreen.Visibility = Visibility.Collapsed;
+        OptionsScreen.Visibility = Visibility.Visible;
+    }
+
+    private void HighScoresButton_Click(object sender, RoutedEventArgs e)
+    {
+        MainMenuScreen.Visibility = Visibility.Collapsed;
+        HighScoresScreen.Visibility = Visibility.Visible;
+    }
+
+    private void ExitButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void BackToMenuButton_Click(object sender, RoutedEventArgs e)
+    {
+        ShowMainMenu();
+    }
+
+    private void MainMenuButton_Click(object sender, RoutedEventArgs e)
+    {
+        gameTimer.Stop();
+        ShowMainMenu();
+    }
+
+    private void ShowMainMenu()
+    {
+        MainMenuScreen.Visibility = Visibility.Visible;
+        GameScreen.Visibility = Visibility.Collapsed;
+        OptionsScreen.Visibility = Visibility.Collapsed;
+        HighScoresScreen.Visibility = Visibility.Collapsed;
+        GameOverScreen.Visibility = Visibility.Collapsed;
+    }
+
+    private void ShowGame()
+    {
+        MainMenuScreen.Visibility = Visibility.Collapsed;
+        GameScreen.Visibility = Visibility.Visible;
+        OptionsScreen.Visibility = Visibility.Collapsed;
+        HighScoresScreen.Visibility = Visibility.Collapsed;
+        GameOverScreen.Visibility = Visibility.Collapsed;
     }
 
     private void StartNewGame()
@@ -61,9 +119,11 @@ public partial class MainWindow : Window
         GameOverScreen.Visibility = Visibility.Collapsed;
 
         currentPiece = CreateRandomPiece();
+        nextPiece = CreateRandomPiece();
 
         UpdateScore();
         DrawBoard();
+        DrawNextPiece();
     }
 
     private void CreateGameBoard()
@@ -75,13 +135,29 @@ public partial class MainWindow : Window
                 Border cell = new Border
                 {
                     Background = Brushes.Black,
-                    BorderBrush = Brushes.Gray,
-                    BorderThickness = new Thickness(1)
+                    BorderThickness = new Thickness(0),
+                    Margin = new Thickness(1),
+                    CornerRadius = new CornerRadius(2)
                 };
 
                 cells[x, y] = cell;
                 GameBoard.Children.Add(cell);
             }
+        }
+    }
+
+    private void CreateNextPiecePreview()
+    {
+        for (int i = 0; i < 16; i++)
+        {
+            Border cell = new Border
+            {
+                Background = Brushes.Black,
+                Margin = new Thickness(1),
+                CornerRadius = new CornerRadius(2)
+            };
+
+            NextPiecePreview.Children.Add(cell);
         }
     }
 
@@ -284,9 +360,17 @@ public partial class MainWindow : Window
         ScoreText.Text = $"Score: {score}";
     }
 
+    private void UpdateHighScore()
+    {
+        HighScoreText.Text = $"High Score: {highScore}";
+    }
+
     private bool SpawnNewPiece()
     {
-        currentPiece = CreateRandomPiece();
+        currentPiece = nextPiece;
+        nextPiece = CreateRandomPiece();
+
+        DrawNextPiece();
 
         return CanMove(0, 0);
     }
@@ -303,7 +387,14 @@ public partial class MainWindow : Window
 
         gameTimer.Stop();
 
-        FinalScoreText.Text = $"Total Score: {score}";
+        if (score > highScore)
+        {
+            highScore = score;
+            highScoreManager.SaveHighScore(highScore);
+            UpdateHighScore();
+        }
+
+        FinalScoreText.Text = $"Total Score: {score}\nHigh Score: {highScore}";
         GameOverScreen.Visibility = Visibility.Visible;
     }
 
@@ -367,6 +458,44 @@ public partial class MainWindow : Window
                     }
                 }
             }
+        }
+    }
+
+    private void DrawNextPiece()
+    {
+        ClearNextPiecePreview();
+
+        Brush color = GetPieceColor(nextPiece.Type);
+
+        int offsetX = (4 - nextPiece.Shape.GetLength(1)) / 2;
+        int offsetY = (4 - nextPiece.Shape.GetLength(0)) / 2;
+
+        for (int y = 0; y < nextPiece.Shape.GetLength(0); y++)
+        {
+            for (int x = 0; x < nextPiece.Shape.GetLength(1); x++)
+            {
+                if (nextPiece.Shape[y, x] == 1)
+                {
+                    int previewX = offsetX + x;
+                    int previewY = offsetY + y;
+
+                    int index = previewY * 4 + previewX;
+
+                    if (index >= 0 && index < NextPiecePreview.Children.Count)
+                    {
+                        Border cell = (Border)NextPiecePreview.Children[index];
+                        cell.Background = color;
+                    }
+                }
+            }
+        }
+    }
+
+    private void ClearNextPiecePreview()
+    {
+        foreach (Border cell in NextPiecePreview.Children)
+        {
+            cell.Background = Brushes.Black;
         }
     }
 
