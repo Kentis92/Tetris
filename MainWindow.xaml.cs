@@ -22,7 +22,6 @@ public partial class MainWindow : Window
     private TetrisPiece currentPiece = null!;
     private TetrisPiece nextPiece = null!;
     private int score;
-    private int highScore;
     private bool gameOver;
 
     public MainWindow()
@@ -40,10 +39,6 @@ public partial class MainWindow : Window
         gameTimer.Tick += GameTimer_Tick;
 
         KeyDown += MainWindow_KeyDown;
-
-        highScore = highScoreManager.LoadHighScore();
-
-        UpdateHighScore();
 
         ShowMainMenu();
     }
@@ -66,6 +61,7 @@ public partial class MainWindow : Window
     {
         MainMenuScreen.Visibility = Visibility.Collapsed;
         HighScoresScreen.Visibility = Visibility.Visible;
+        DisplayHighScores();
     }
 
     private void ExitButton_Click(object sender, RoutedEventArgs e)
@@ -360,11 +356,6 @@ public partial class MainWindow : Window
         ScoreText.Text = $"Score: {score}";
     }
 
-    private void UpdateHighScore()
-    {
-        HighScoreText.Text = $"High Score: {highScore}";
-    }
-
     private bool SpawnNewPiece()
     {
         currentPiece = nextPiece;
@@ -384,18 +375,64 @@ public partial class MainWindow : Window
     private void EndGame()
     {
         gameOver = true;
-
         gameTimer.Stop();
 
-        if (score > highScore)
+        FinalScoreText.Text = $"Score: {score}";
+        PlayerNameTextBox.Text = "";
+        GameOverScreen.Visibility = Visibility.Visible;
+        PlayerNameTextBox.Focus();
+    }
+
+    private void SaveScoreButton_Click(object sender, RoutedEventArgs e)
+    {
+        string name = PlayerNameTextBox.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(name))
         {
-            highScore = score;
-            highScoreManager.SaveHighScore(highScore);
-            UpdateHighScore();
+            MessageBox.Show("Please enter your name.");
+            PlayerNameTextBox.Focus();
+            return;
         }
 
-        FinalScoreText.Text = $"Total Score: {score}\nHigh Score: {highScore}";
-        GameOverScreen.Visibility = Visibility.Visible;
+        highScoreManager.SaveScore(name, score);
+        DisplayHighScores();
+
+        GameOverScreen.Visibility = Visibility.Collapsed;
+        HighScoresScreen.Visibility = Visibility.Visible;
+    }
+
+    private void DisplayHighScores()
+    {
+        HighScoresList.Children.Clear();
+
+        List<HighScoreEntry> scores = highScoreManager.LoadScores();
+
+        if (scores.Count == 0)
+        {
+            HighScoresList.Children.Add(new TextBlock
+            {
+                Text = "No scores yet.",
+                Foreground = Brushes.Gray,
+                FontSize = 16,
+                HorizontalAlignment = HorizontalAlignment.Center
+            });
+
+            return;
+        }
+
+        for (int i = 0; i < scores.Count; i++)
+        {
+            HighScoreEntry entry = scores[i];
+
+            HighScoresList.Children.Add(new TextBlock
+            {
+                Text = $"{i + 1}. {entry.Name} - {entry.Score}",
+                Foreground = Brushes.White,
+                FontSize = 16,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(0, 2, 0, 2)
+            });
+        }
     }
 
     private void RestartButton_Click(object sender, RoutedEventArgs e)
