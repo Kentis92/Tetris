@@ -18,16 +18,15 @@ public partial class MainWindow : Window
     private readonly DispatcherTimer gameTimer;
     private readonly Random random = new();
 
-    private TetrisPiece currentPiece;
+    private TetrisPiece currentPiece = null!;
     private int score;
+    private bool gameOver;
 
     public MainWindow()
     {
         InitializeComponent();
 
         CreateGameBoard();
-
-        currentPiece = CreateRandomPiece();
 
         gameTimer = new DispatcherTimer
         {
@@ -40,11 +39,31 @@ public partial class MainWindow : Window
 
         Focus();
 
-        UpdateScore();
-
-        DrawBoard();
+        StartNewGame();
 
         gameTimer.Start();
+    }
+
+    private void StartNewGame()
+    {
+        for (int y = 0; y < GridHeight; y++)
+        {
+            for (int x = 0; x < GridWidth; x++)
+            {
+                grid[x, y] = 0;
+                gridColors[x, y] = default;
+            }
+        }
+
+        score = 0;
+        gameOver = false;
+
+        GameOverScreen.Visibility = Visibility.Collapsed;
+
+        currentPiece = CreateRandomPiece();
+
+        UpdateScore();
+        DrawBoard();
     }
 
     private void CreateGameBoard()
@@ -68,6 +87,11 @@ public partial class MainWindow : Window
 
     private void GameTimer_Tick(object? sender, EventArgs e)
     {
+        if (gameOver)
+        {
+            return;
+        }
+
         if (CanMove(0, 1))
         {
             currentPiece.Y++;
@@ -76,7 +100,12 @@ public partial class MainWindow : Window
         {
             LockPiece();
             ClearCompletedLines();
-            SpawnNewPiece();
+
+            if (!SpawnNewPiece())
+            {
+                EndGame();
+                return;
+            }
         }
 
         DrawBoard();
@@ -84,6 +113,11 @@ public partial class MainWindow : Window
 
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
+        if (gameOver)
+        {
+            return;
+        }
+
         switch (e.Key)
         {
             case Key.Left:
@@ -250,15 +284,34 @@ public partial class MainWindow : Window
         ScoreText.Text = $"Score: {score}";
     }
 
-    private void SpawnNewPiece()
+    private bool SpawnNewPiece()
     {
         currentPiece = CreateRandomPiece();
+
+        return CanMove(0, 0);
     }
 
     private TetrisPiece CreateRandomPiece()
     {
         TetrominoType type = (TetrominoType)random.Next(7);
         return new TetrisPiece(type);
+    }
+
+    private void EndGame()
+    {
+        gameOver = true;
+
+        gameTimer.Stop();
+
+        FinalScoreText.Text = $"Total Score: {score}";
+        GameOverScreen.Visibility = Visibility.Visible;
+    }
+
+    private void RestartButton_Click(object sender, RoutedEventArgs e)
+    {
+        StartNewGame();
+        gameTimer.Start();
+        Focus();
     }
 
     private Brush GetPieceColor(TetrominoType type)
