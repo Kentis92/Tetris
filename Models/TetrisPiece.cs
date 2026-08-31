@@ -1,5 +1,16 @@
 namespace Tetris.Models;
 
+public enum TetrominoType
+{
+    I,
+    O,
+    T,
+    S,
+    Z,
+    J,
+    L
+}
+
 public class TetrisPiece
 {
     public int[,] Shape { get; set; }
@@ -7,11 +18,56 @@ public class TetrisPiece
     public int X { get; set; }
     public int Y { get; set; }
 
-    public TetrisPiece()
+    public TetrominoType Type { get; }
+
+    public TetrisPiece(TetrominoType type)
     {
-        Shape = new int[,]
+        Type = type;
+
+        Shape = type switch
         {
-            { 1, 1, 1, 1 }
+            TetrominoType.I => new int[,]
+            {
+                { 1, 1, 1, 1 }
+            },
+
+            TetrominoType.O => new int[,]
+            {
+                { 1, 1 },
+                { 1, 1 }
+            },
+
+            TetrominoType.T => new int[,]
+            {
+                { 0, 1, 0 },
+                { 1, 1, 1 }
+            },
+
+            TetrominoType.S => new int[,]
+            {
+                { 0, 1, 1 },
+                { 1, 1, 0 }
+            },
+
+            TetrominoType.Z => new int[,]
+            {
+                { 1, 1, 0 },
+                { 0, 1, 1 }
+            },
+
+            TetrominoType.J => new int[,]
+            {
+                { 1, 0, 0 },
+                { 1, 1, 1 }
+            },
+
+            TetrominoType.L => new int[,]
+            {
+                { 0, 0, 1 },
+                { 1, 1, 1 }
+            },
+
+            _ => throw new ArgumentException("Ukjent brikke")
         };
 
         X = 3;
@@ -20,6 +76,11 @@ public class TetrisPiece
 
     public void Rotate()
     {
+        if (Type == TetrominoType.O)
+        {
+            return;
+        }
+
         int rows = Shape.GetLength(0);
         int columns = Shape.GetLength(1);
 

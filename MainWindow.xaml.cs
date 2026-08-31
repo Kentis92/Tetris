@@ -14,7 +14,9 @@ public partial class MainWindow : Window
 
     private readonly Border[,] cells = new Border[GridWidth, GridHeight];
     private readonly int[,] grid = new int[GridWidth, GridHeight];
+    private readonly TetrominoType[,] gridColors = new TetrominoType[GridWidth, GridHeight];
     private readonly DispatcherTimer gameTimer;
+    private readonly Random random = new();
 
     private TetrisPiece currentPiece;
 
@@ -24,7 +26,7 @@ public partial class MainWindow : Window
 
         CreateGameBoard();
 
-        currentPiece = new TetrisPiece();
+        currentPiece = CreateRandomPiece();
 
         gameTimer = new DispatcherTimer
         {
@@ -170,6 +172,7 @@ public partial class MainWindow : Window
                         boardY >= 0 && boardY < GridHeight)
                     {
                         grid[boardX, boardY] = 1;
+                        gridColors[boardX, boardY] = currentPiece.Type;
                     }
                 }
             }
@@ -178,7 +181,28 @@ public partial class MainWindow : Window
 
     private void SpawnNewPiece()
     {
-        currentPiece = new TetrisPiece();
+        currentPiece = CreateRandomPiece();
+    }
+
+    private TetrisPiece CreateRandomPiece()
+    {
+        TetrominoType type = (TetrominoType)random.Next(7);
+        return new TetrisPiece(type);
+    }
+
+    private Brush GetPieceColor(TetrominoType type)
+    {
+        return type switch
+        {
+            TetrominoType.I => Brushes.Cyan,
+            TetrominoType.O => Brushes.Yellow,
+            TetrominoType.T => Brushes.Purple,
+            TetrominoType.S => Brushes.Green,
+            TetrominoType.Z => Brushes.Red,
+            TetrominoType.J => Brushes.Blue,
+            TetrominoType.L => Brushes.Orange,
+            _ => Brushes.White
+        };
     }
 
     private void DrawBoard()
@@ -191,7 +215,7 @@ public partial class MainWindow : Window
             {
                 if (grid[x, y] == 1)
                 {
-                    cells[x, y].Background = Brushes.Cyan;
+                    cells[x, y].Background = GetPieceColor(gridColors[x, y]);
                 }
             }
         }
@@ -201,6 +225,8 @@ public partial class MainWindow : Window
 
     private void DrawPiece()
     {
+        Brush color = GetPieceColor(currentPiece.Type);
+
         for (int y = 0; y < currentPiece.Shape.GetLength(0); y++)
         {
             for (int x = 0; x < currentPiece.Shape.GetLength(1); x++)
@@ -213,7 +239,7 @@ public partial class MainWindow : Window
                     if (boardX >= 0 && boardX < GridWidth &&
                         boardY >= 0 && boardY < GridHeight)
                     {
-                        cells[boardX, boardY].Background = Brushes.Cyan;
+                        cells[boardX, boardY].Background = color;
                     }
                 }
             }
