@@ -1,28 +1,56 @@
-using System.IO;
+using System.Text.Json;
 
 namespace Tetris;
 
+public class HighScoreEntry
+{
+    public string Name { get; set; } = "";
+    public int Score { get; set; }
+}
+
 public class HighScoreManager
 {
+    private const int MaxScores = 10;
+
     private readonly string filePath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "Tetris",
-        "highscore.txt");
+        "highscores.json");
 
-    public int LoadHighScore()
+    public List<HighScoreEntry> LoadScores()
     {
         if (!File.Exists(filePath))
         {
-            return 0;
+            return new List<HighScoreEntry>();
         }
 
-        string savedScore = File.ReadAllText(filePath);
-
-        return int.TryParse(savedScore, out int highScore) ? highScore : 0;
+        try
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<List<HighScoreEntry>>(json)
+                   ?? new List<HighScoreEntry>();
+        }
+        catch
+        {
+            return new List<HighScoreEntry>();
+        }
     }
 
-    public void SaveHighScore(int score)
+    public void SaveScore(string name, int score)
     {
+        List<HighScoreEntry> scores = LoadScores();
+
+        scores.Add(new HighScoreEntry
+        {
+            Name = name,
+            Score = score
+        });
+
+        scores = scores
+            .OrderByDescending(x => x.Score)
+            .Take(MaxScores)
+            .ToList();
+
         string? directory = Path.GetDirectoryName(filePath);
 
         if (directory != null)
@@ -30,6 +58,11 @@ public class HighScoreManager
             Directory.CreateDirectory(directory);
         }
 
-        File.WriteAllText(filePath, score.ToString());
+        string json = JsonSerializer.Serialize(scores, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+
+        File.WriteAllText(filePath, json);
     }
 }
