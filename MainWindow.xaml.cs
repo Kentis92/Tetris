@@ -216,6 +216,22 @@ public partial class MainWindow : Window
             case Key.Up:
                 TryRotate();
                 break;
+
+            case Key.Space:
+                while (CanMove(0, 1))
+                {
+                    currentPiece.Y++;
+                }
+
+                LockPiece();
+                ClearCompletedLines();
+
+                if (!SpawnNewPiece())
+                {
+                    EndGame();
+                    return;
+                }
+                break;
         }
 
         DrawBoard();
