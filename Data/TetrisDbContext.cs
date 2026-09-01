@@ -18,6 +18,6 @@ public class TetrisDbContext : DbContext
 
         string databasePath = Path.Combine(folder, "tetris.db");
 
-        optionsBuilder.UseSqlite($"Data Source={Database}");
+        optionsBuilder.UseSqlite($"Data Source={databasePath}");
     }
 }
