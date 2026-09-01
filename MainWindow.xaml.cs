@@ -18,6 +18,7 @@ public partial class MainWindow : Window
     private readonly DispatcherTimer gameTimer;
     private readonly Random random = new();
     private readonly HighScoreManager highScoreManager = new();
+    private readonly UserManager userManager = new();
 
     private TetrisPiece currentPiece = null!;
     private TetrisPiece nextPiece = null!;
@@ -31,10 +32,7 @@ public partial class MainWindow : Window
         CreateGameBoard();
         CreateNextPiecePreview();
 
-        gameTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromMilliseconds(500)
-        };
+        gameTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
 
         gameTimer.Tick += GameTimer_Tick;
 
@@ -49,6 +47,65 @@ public partial class MainWindow : Window
         StartNewGame();
         gameTimer.Start();
         Focus();
+    }
+
+    private void RegisterButton_Click(object sender, RoutedEventArgs e)
+    {
+        MainMenuScreen.Visibility = Visibility.Collapsed;
+        RegisterScreen.Visibility = Visibility.Visible;
+        RegisterUsernameTextBox.Text = "";
+        RegisterPasswordBox.Password = "";
+        RegisterUsernameTextBox.Focus();
+    }
+
+    private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
+    {
+        string username = RegisterUsernameTextBox.Text.Trim();
+        string password = RegisterPasswordBox.Password;
+
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            MessageBox.Show("Please enter a username.");
+            RegisterUsernameTextBox.Focus();
+            return;
+        }
+
+        if (username.Length < 3)
+        {
+            MessageBox.Show("Username must be at least 3 characters.");
+            RegisterUsernameTextBox.Focus();
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            MessageBox.Show("Please enter a password.");
+            RegisterPasswordBox.Focus();
+            return;
+        }
+
+        if (password.Length < 4)
+        {
+            MessageBox.Show("Password must be at least 4 characters.");
+            RegisterPasswordBox.Focus();
+            return;
+        }
+
+        bool registered = userManager.Register(username, password);
+
+        if (!registered)
+        {
+            MessageBox.Show("That username already exists.");
+            RegisterUsernameTextBox.Focus();
+            return;
+        }
+
+        MessageBox.Show("Account created successfully.");
+
+        RegisterUsernameTextBox.Text = "";
+        RegisterPasswordBox.Password = "";
+
+        ShowMainMenu();
     }
 
     private void OptionsButton_Click(object sender, RoutedEventArgs e)
@@ -86,6 +143,7 @@ public partial class MainWindow : Window
         GameScreen.Visibility = Visibility.Collapsed;
         OptionsScreen.Visibility = Visibility.Collapsed;
         HighScoresScreen.Visibility = Visibility.Collapsed;
+        RegisterScreen.Visibility = Visibility.Collapsed;
         GameOverScreen.Visibility = Visibility.Collapsed;
     }
 
@@ -95,6 +153,7 @@ public partial class MainWindow : Window
         GameScreen.Visibility = Visibility.Visible;
         OptionsScreen.Visibility = Visibility.Collapsed;
         HighScoresScreen.Visibility = Visibility.Collapsed;
+        RegisterScreen.Visibility = Visibility.Collapsed;
         GameOverScreen.Visibility = Visibility.Collapsed;
     }
 
@@ -133,7 +192,7 @@ public partial class MainWindow : Window
                     Background = Brushes.Black,
                     BorderThickness = new Thickness(0),
                     Margin = new Thickness(1),
-                    CornerRadius = new CornerRadius(2)
+                    CornerRadius = new CornerRadius(2),
                 };
 
                 cells[x, y] = cell;
@@ -150,7 +209,7 @@ public partial class MainWindow : Window
             {
                 Background = Brushes.Black,
                 Margin = new Thickness(1),
-                CornerRadius = new CornerRadius(2)
+                CornerRadius = new CornerRadius(2),
             };
 
             NextPiecePreview.Children.Add(cell);
@@ -185,6 +244,11 @@ public partial class MainWindow : Window
 
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
+        if (e.OriginalSource is TextBox || e.OriginalSource is PasswordBox)
+        {
+            return;
+        }
+
         if (gameOver)
         {
             return;
@@ -294,8 +358,7 @@ public partial class MainWindow : Window
                     int boardX = currentPiece.X + x;
                     int boardY = currentPiece.Y + y;
 
-                    if (boardX >= 0 && boardX < GridWidth &&
-                        boardY >= 0 && boardY < GridHeight)
+                    if (boardX >= 0 && boardX < GridWidth && boardY >= 0 && boardY < GridHeight)
                     {
                         grid[boardX, boardY] = 1;
                         gridColors[boardX, boardY] = currentPiece.Type;
@@ -361,7 +424,7 @@ public partial class MainWindow : Window
             2 => 300,
             3 => 500,
             4 => 800,
-            _ => 0
+            _ => 0,
         };
 
         UpdateScore();
@@ -425,13 +488,15 @@ public partial class MainWindow : Window
 
         if (scores.Count == 0)
         {
-            HighScoresList.Children.Add(new TextBlock
-            {
-                Text = "No scores yet.",
-                Foreground = Brushes.Gray,
-                FontSize = 16,
-                HorizontalAlignment = HorizontalAlignment.Center
-            });
+            HighScoresList.Children.Add(
+                new TextBlock
+                {
+                    Text = "No scores yet.",
+                    Foreground = Brushes.Gray,
+                    FontSize = 16,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                }
+            );
 
             return;
         }
@@ -440,14 +505,16 @@ public partial class MainWindow : Window
         {
             HighScoreEntry entry = scores[i];
 
-            HighScoresList.Children.Add(new TextBlock
-            {
-                Text = $"{i + 1}. {entry.Name} - {entry.Score}",
-                Foreground = Brushes.White,
-                FontSize = 16,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(0, 2, 0, 2)
-            });
+            HighScoresList.Children.Add(
+                new TextBlock
+                {
+                    Text = $"{i + 1}. {entry.Name} - {entry.Score}",
+                    Foreground = Brushes.White,
+                    FontSize = 16,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Margin = new Thickness(0, 2, 0, 2),
+                }
+            );
         }
     }
 
@@ -469,7 +536,7 @@ public partial class MainWindow : Window
             TetrominoType.Z => Brushes.Red,
             TetrominoType.J => Brushes.Blue,
             TetrominoType.L => Brushes.Orange,
-            _ => Brushes.White
+            _ => Brushes.White,
         };
     }
 
@@ -504,8 +571,7 @@ public partial class MainWindow : Window
                     int boardX = currentPiece.X + x;
                     int boardY = currentPiece.Y + y;
 
-                    if (boardX >= 0 && boardX < GridWidth &&
-                        boardY >= 0 && boardY < GridHeight)
+                    if (boardX >= 0 && boardX < GridWidth && boardY >= 0 && boardY < GridHeight)
                     {
                         cells[boardX, boardY].Background = color;
                     }

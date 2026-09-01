@@ -1,11 +1,13 @@
 using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Tetris.Models;
 
 namespace Tetris.Data;
 
 public class TetrisDbContext : DbContext
 {
     public DbSet<HighScoreEntry> HighScores => Set<HighScoreEntry>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

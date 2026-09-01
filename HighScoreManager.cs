@@ -14,12 +14,6 @@ public class HighScoreManager
 {
     private const int MaxScores = 10;
 
-    public HighScoreManager()
-    {
-        using TetrisDbContext db = new();
-        db.Database.EnsureCreated();
-    }
-
     public List<HighScoreEntry> LoadScores()
     {
         using TetrisDbContext db = new();

@@ -6,208 +6,272 @@
         Height="600"
         Background="Black">
 
-    <Grid>
+        <Grid>
 
-        <Grid x:Name="MainMenuScreen"
-              Background="Black"
-              Panel.ZIndex="3">
+                <Grid x:Name="MainMenuScreen"
+                      Background="Black"
+                      Panel.ZIndex="3">
 
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
 
-                <TextBlock Text="TETRIS"
-                           Foreground="White"
-                           FontSize="42"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,40"/>
+                                <TextBlock Text="TETRIS"
+                                           Foreground="White"
+                                           FontSize="42"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,40"/>
 
-                <Button Content="PLAY"
-                        Width="160"
-                        Height="40"
-                        Margin="0,5"
-                        FontSize="18"
-                        Click="PlayButton_Click"/>
+                                <Button Content="PLAY"
+                                        Width="160"
+                                        Height="40"
+                                        Margin="0,5"
+                                        FontSize="18"
+                                        Click="PlayButton_Click"/>
 
-                <Button Content="OPTIONS"
-                        Width="160"
-                        Height="40"
-                        Margin="0,5"
-                        FontSize="18"
-                        Click="OptionsButton_Click"/>
+                                <Button Content="REGISTER"
+                                        Width="160"
+                                        Height="40"
+                                        Margin="0,5"
+                                        FontSize="18"
+                                        Click="RegisterButton_Click"/>
 
-                <Button Content="HIGHSCORES"
-                        Width="160"
-                        Height="40"
-                        Margin="0,5"
-                        FontSize="18"
-                        Click="HighScoresButton_Click"/>
+                                <Button Content="OPTIONS"
+                                        Width="160"
+                                        Height="40"
+                                        Margin="0,5"
+                                        FontSize="18"
+                                        Click="OptionsButton_Click"/>
 
-                <Button Content="EXIT"
-                        Width="160"
-                        Height="40"
-                        Margin="0,5"
-                        FontSize="18"
-                        Click="ExitButton_Click"/>
+                                <Button Content="HIGHSCORES"
+                                        Width="160"
+                                        Height="40"
+                                        Margin="0,5"
+                                        FontSize="18"
+                                        Click="HighScoresButton_Click"/>
 
-            </StackPanel>
+                                <Button Content="EXIT"
+                                        Width="160"
+                                        Height="40"
+                                        Margin="0,5"
+                                        FontSize="18"
+                                        Click="ExitButton_Click"/>
+
+                        </StackPanel>
+                </Grid>
+
+                <Grid x:Name="GameScreen"
+                      Visibility="Collapsed">
+
+                        <UniformGrid x:Name="GameBoard"
+                                     Rows="20"
+                                     Columns="10"
+                                     Margin="10"/>
+
+                        <StackPanel HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Margin="15,8,0,0"
+                                    Panel.ZIndex="1">
+
+                                <TextBlock Text="Next"
+                                           Foreground="Gray"
+                                           FontSize="12"/>
+
+                                <UniformGrid x:Name="NextPiecePreview"
+                                             Rows="4"
+                                             Columns="4"
+                                             Width="56"
+                                             Height="56"
+                                             Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Margin="0,8,15,0"
+                                    Panel.ZIndex="1">
+
+                                <TextBlock x:Name="ScoreText"
+                                           Text="Score: 0"
+                                           Foreground="White"
+                                           FontSize="16"
+                                           HorizontalAlignment="Right"/>
+
+                        </StackPanel>
+
+                        <Grid x:Name="GameOverScreen"
+                              Background="#DD000000"
+                              Visibility="Collapsed"
+                              Panel.ZIndex="2">
+
+                                <StackPanel HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+
+                                        <TextBlock Text="GAME OVER"
+                                                   Foreground="White"
+                                                   FontSize="36"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,15"/>
+
+                                        <TextBlock x:Name="FinalScoreText"
+                                                   Text="Score: 0"
+                                                   Foreground="White"
+                                                   FontSize="24"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,15"/>
+
+                                        <TextBlock Text="Enter your name:"
+                                                   Foreground="White"
+                                                   FontSize="16"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,5"/>
+
+                                        <TextBox x:Name="PlayerNameTextBox"
+                                                 Width="140"
+                                                 Height="30"
+                                                 MaxLength="8"
+                                                 HorizontalContentAlignment="Center"
+                                                 FontSize="16"
+                                                 Margin="0,0,0,10"/>
+
+                                        <Button Content="SAVE SCORE"
+                                                Width="140"
+                                                Height="35"
+                                                FontSize="15"
+                                                Click="SaveScoreButton_Click"/>
+
+                                        <Button Content="Restart"
+                                                Width="140"
+                                                Height="35"
+                                                FontSize="15"
+                                                Margin="0,8,0,0"
+                                                Click="RestartButton_Click"/>
+
+                                        <Button Content="Main Menu"
+                                                Width="140"
+                                                Height="35"
+                                                FontSize="15"
+                                                Margin="0,8,0,0"
+                                                Click="MainMenuButton_Click"/>
+
+                                </StackPanel>
+                        </Grid>
+                </Grid>
+
+                <Grid x:Name="OptionsScreen"
+                      Background="Black"
+                      Visibility="Collapsed"
+                      Panel.ZIndex="4">
+
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+
+                                <TextBlock Text="OPTIONS"
+                                           Foreground="White"
+                                           FontSize="36"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,30"/>
+
+                                <TextBlock Text="Options will be added later."
+                                           Foreground="Gray"
+                                           FontSize="16"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,30"/>
+
+                                <Button Content="BACK"
+                                        Width="160"
+                                        Height="40"
+                                        FontSize="18"
+                                        Click="BackToMenuButton_Click"/>
+
+                        </StackPanel>
+                </Grid>
+
+                <Grid x:Name="HighScoresScreen"
+                      Background="Black"
+                      Visibility="Collapsed"
+                      Panel.ZIndex="4">
+
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+
+                                <TextBlock Text="HIGHSCORES"
+                                           Foreground="White"
+                                           FontSize="32"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,25"/>
+
+                                <StackPanel x:Name="HighScoresList"
+                                            Width="220"
+                                            Margin="0,0,0,25"/>
+
+                                <Button Content="BACK"
+                                        Width="160"
+                                        Height="40"
+                                        FontSize="18"
+                                        Click="BackToMenuButton_Click"/>
+
+                        </StackPanel>
+                </Grid>
+
+                <Grid x:Name="RegisterScreen"
+                      Background="Black"
+                      Visibility="Collapsed"
+                      Panel.ZIndex="5">
+
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+
+                                <TextBlock Text="REGISTER"
+                                           Foreground="White"
+                                           FontSize="36"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,30"/>
+
+                                <TextBlock Text="Username"
+                                           Foreground="White"
+                                           FontSize="16"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,5"/>
+
+                                <TextBox x:Name="RegisterUsernameTextBox"
+                                         Width="160"
+                                         Height="30"
+                                         MaxLength="20"
+                                         HorizontalContentAlignment="Center"
+                                         FontSize="16"
+                                         Margin="0,0,0,15"/>
+
+                                <TextBlock Text="Password"
+                                           Foreground="White"
+                                           FontSize="16"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,5"/>
+
+                                <PasswordBox x:Name="RegisterPasswordBox"
+                                             Width="160"
+                                             Height="30"
+                                             FontSize="16"
+                                             Margin="0,0,0,20"/>
+
+                                <Button Content="REGISTER"
+                                        Width="160"
+                                        Height="40"
+                                        FontSize="18"
+                                        Margin="0,0,0,10"
+                                        Click="CreateAccountButton_Click"/>
+
+                                <Button Content="BACK"
+                                        Width="160"
+                                        Height="40"
+                                        FontSize="18"
+                                        Click="BackToMenuButton_Click"/>
+
+                        </StackPanel>
+                </Grid>
+
         </Grid>
-
-        <Grid x:Name="GameScreen"
-              Visibility="Collapsed">
-
-            <UniformGrid x:Name="GameBoard"
-                         Rows="20"
-                         Columns="10"
-                         Margin="10"/>
-
-            <StackPanel HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="15,8,0,0"
-                        Panel.ZIndex="1">
-
-                <TextBlock Text="Next"
-                           Foreground="Gray"
-                           FontSize="12"/>
-
-                <UniformGrid x:Name="NextPiecePreview"
-                             Rows="4"
-                             Columns="4"
-                             Width="56"
-                             Height="56"
-                             Margin="0,2,0,0"/>
-            </StackPanel>
-
-            <StackPanel HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Margin="0,8,15,0"
-                        Panel.ZIndex="1">
-
-                <TextBlock x:Name="ScoreText"
-                           Text="Score: 0"
-                           Foreground="White"
-                           FontSize="16"
-                           HorizontalAlignment="Right"/>
-
-            </StackPanel>
-
-            <Grid x:Name="GameOverScreen"
-                  Background="#DD000000"
-                  Visibility="Collapsed"
-                  Panel.ZIndex="2">
-
-                <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-
-                    <TextBlock Text="GAME OVER"
-                               Foreground="White"
-                               FontSize="36"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,15"/>
-
-                    <TextBlock x:Name="FinalScoreText"
-                               Text="Score: 0"
-                               Foreground="White"
-                               FontSize="24"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,15"/>
-
-                    <TextBlock Text="Enter your name:"
-                               Foreground="White"
-                               FontSize="16"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,5"/>
-
-                    <TextBox x:Name="PlayerNameTextBox"
-                             Width="140"
-                             Height="30"
-                             MaxLength="8"
-                             HorizontalContentAlignment="Center"
-                             FontSize="16"
-                             Margin="0,0,0,10"/>
-
-                    <Button Content="SAVE SCORE"
-                            Width="140"
-                            Height="35"
-                            FontSize="15"
-                            Click="SaveScoreButton_Click"/>
-
-                    <Button Content="Restart"
-                            Width="140"
-                            Height="35"
-                            FontSize="15"
-                            Margin="0,8,0,0"
-                            Click="RestartButton_Click"/>
-
-                    <Button Content="Main Menu"
-                            Width="140"
-                            Height="35"
-                            FontSize="15"
-                            Margin="0,8,0,0"
-                            Click="MainMenuButton_Click"/>
-
-                </StackPanel>
-            </Grid>
-        </Grid>
-
-        <Grid x:Name="OptionsScreen"
-              Background="Black"
-              Visibility="Collapsed"
-              Panel.ZIndex="4">
-
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-
-                <TextBlock Text="OPTIONS"
-                           Foreground="White"
-                           FontSize="36"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,30"/>
-
-                <TextBlock Text="Options will be added later."
-                           Foreground="Gray"
-                           FontSize="16"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,30"/>
-
-                <Button Content="BACK"
-                        Width="160"
-                        Height="40"
-                        FontSize="18"
-                        Click="BackToMenuButton_Click"/>
-
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="HighScoresScreen"
-              Background="Black"
-              Visibility="Collapsed"
-              Panel.ZIndex="4">
-
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-
-                <TextBlock Text="HIGHSCORES"
-                           Foreground="White"
-                           FontSize="32"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,25"/>
-
-                <StackPanel x:Name="HighScoresList"
-                            Width="220"
-                            Margin="0,0,0,25"/>
-
-                <Button Content="BACK"
-                        Width="160"
-                        Height="40"
-                        FontSize="18"
-                        Click="BackToMenuButton_Click"/>
-
-            </StackPanel>
-        </Grid>
-
-    </Grid>
 </Window>
