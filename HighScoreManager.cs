@@ -1,10 +1,11 @@
-using System.IO;
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Tetris.Data;
 
 namespace Tetris;
 
 public class HighScoreEntry
 {
+    public int Id { get; set; }
     public string Name { get; set; } = "";
     public int Score { get; set; }
 }
@@ -13,57 +14,33 @@ public class HighScoreManager
 {
     private const int MaxScores = 10;
 
-    private readonly string filePath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "Tetris",
-        "highscores.json");
+    public HighScoreManager()
+    {
+        using TetrisDbContext db = new();
+        db.Database.EnsureCreated();
+    }
 
     public List<HighScoreEntry> LoadScores()
     {
-        if (!File.Exists(filePath))
-        {
-            return new List<HighScoreEntry>();
-        }
+        using TetrisDbContext db = new();
 
-        try
-        {
-            string json = File.ReadAllText(filePath);
-            return JsonSerializer.Deserialize<List<HighScoreEntry>>(json)
-                   ?? new List<HighScoreEntry>();
-        }
-        catch
-        {
-            return new List<HighScoreEntry>();
-        }
+        return db.HighScores.OrderByDescending(x => x.Score).Take(MaxScores).ToList();
     }
 
     public void SaveScore(string name, int score)
     {
-        List<HighScoreEntry> scores = LoadScores();
+        using TetrisDbContext db = new();
 
-        scores.Add(new HighScoreEntry
+        db.HighScores.Add(new HighScoreEntry { Name = name, Score = score });
+
+        db.SaveChanges();
+
+        List<HighScoreEntry> scores = db.HighScores.OrderByDescending(x => x.Score).ToList();
+
+        if (scores.Count > MaxScores)
         {
-            Name = name,
-            Score = score
-        });
-
-        scores = scores
-            .OrderByDescending(x => x.Score)
-            .Take(MaxScores)
-            .ToList();
-
-        string? directory = Path.GetDirectoryName(filePath);
-
-        if (directory != null)
-        {
-            Directory.CreateDirectory(directory);
+            db.HighScores.RemoveRange(scores.Skip(MaxScores));
+            db.SaveChanges();
         }
-
-        string json = JsonSerializer.Serialize(scores, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
-
-        File.WriteAllText(filePath, json);
     }
 }
