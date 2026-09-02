@@ -37,4 +37,18 @@ public class HighScoreManager
             db.SaveChanges();
         }
     }
+
+    public int GetPlayerBestScore(string username)
+    {
+        using TetrisDbContext db = new();
+
+        return db.HighScores.Where(x => x.Name == username).Select(x => (int?)x.Score).Max() ?? 0;
+    }
+
+    public int GetPlayerScoreCount(string username)
+    {
+        using TetrisDbContext db = new();
+
+        return db.HighScores.Count(x => x.Name == username);
+    }
 }

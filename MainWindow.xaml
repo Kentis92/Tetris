@@ -2,164 +2,498 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Tetris"
-        Width="300"
-        Height="600"
-        Background="Black">
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="#080808">
 
         <Grid>
 
+                <Grid x:Name="LoginScreen"
+                      Background="#080808"
+                      Panel.ZIndex="10">
+
+                        <Border Width="430"
+                                Padding="45"
+                                Background="#111111"
+                                BorderBrush="#B89B4A"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+
+                                <StackPanel>
+
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,0,0,35">
+
+                                                <TextBlock Text="T"
+                                                           Foreground="Cyan"
+                                                           FontSize="52"
+                                                           FontWeight="Bold"/>
+
+                                                <TextBlock Text="E"
+                                                           Foreground="Yellow"
+                                                           FontSize="52"
+                                                           FontWeight="Bold"/>
+
+                                                <TextBlock Text="T"
+                                                           Foreground="Purple"
+                                                           FontSize="52"
+                                                           FontWeight="Bold"/>
+
+                                                <TextBlock Text="R"
+                                                           Foreground="Green"
+                                                           FontSize="52"
+                                                           FontWeight="Bold"/>
+
+                                                <TextBlock Text="I"
+                                                           Foreground="Red"
+                                                           FontSize="52"
+                                                           FontWeight="Bold"/>
+
+                                                <TextBlock Text="S"
+                                                           Foreground="Blue"
+                                                           FontSize="52"
+                                                           FontWeight="Bold"/>
+
+                                        </StackPanel>
+
+                                        <TextBlock Text="LOGIN"
+                                                   Foreground="White"
+                                                   FontSize="24"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,25"/>
+
+                                        <TextBlock Text="USERNAME"
+                                                   Foreground="Gray"
+                                                   FontSize="12"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,5"/>
+
+                                        <TextBox x:Name="LoginUsernameTextBox"
+                                                 Width="220"
+                                                 Height="32"
+                                                 FontSize="16"
+                                                 HorizontalContentAlignment="Center"
+                                                 Margin="0,0,0,15"/>
+
+                                        <TextBlock Text="PASSWORD"
+                                                   Foreground="Gray"
+                                                   FontSize="12"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,5"/>
+
+                                        <PasswordBox x:Name="LoginPasswordBox"
+                                                     Width="220"
+                                                     Height="32"
+                                                     FontSize="16"
+                                                     HorizontalContentAlignment="Center"
+                                                     Margin="0,0,0,25"/>
+
+                                        <Button Content="LOGIN"
+                                                Width="220"
+                                                Height="40"
+                                                FontSize="17"
+                                                FontWeight="Bold"
+                                                Margin="0,0,0,10"
+                                                Click="LoginButton_Click"/>
+
+                                        <Button Content="REGISTER"
+                                                Width="220"
+                                                Height="40"
+                                                FontSize="17"
+                                                Margin="0,0,0,10"
+                                                Click="RegisterButton_Click"/>
+
+                                        <Button Content="EXIT"
+                                                Width="220"
+                                                Height="40"
+                                                FontSize="17"
+                                                Click="ExitButton_Click"/>
+
+                                </StackPanel>
+                        </Border>
+                </Grid>
+
                 <Grid x:Name="MainMenuScreen"
-                      Background="Black"
+                      Background="#080808"
+                      Visibility="Collapsed"
                       Panel.ZIndex="3">
 
                         <StackPanel HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
 
-                                <TextBlock Text="TETRIS"
-                                           Foreground="White"
-                                           FontSize="42"
-                                           FontWeight="Bold"
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,0,0,45">
+
+                                        <TextBlock Text="T"
+                                                   Foreground="Cyan"
+                                                   FontSize="64"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Text="E"
+                                                   Foreground="Yellow"
+                                                   FontSize="64"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Text="T"
+                                                   Foreground="Purple"
+                                                   FontSize="64"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Text="R"
+                                                   Foreground="Green"
+                                                   FontSize="64"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Text="I"
+                                                   Foreground="Red"
+                                                   FontSize="64"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Text="S"
+                                                   Foreground="Blue"
+                                                   FontSize="64"
+                                                   FontWeight="Bold"/>
+
+                                </StackPanel>
+
+                                <TextBlock x:Name="WelcomeText"
+                                           Text="Welcome"
+                                           Foreground="Gray"
+                                           FontSize="17"
                                            HorizontalAlignment="Center"
-                                           Margin="0,0,0,40"/>
+                                           Margin="0,0,0,25"/>
 
                                 <Button Content="PLAY"
-                                        Width="160"
-                                        Height="40"
+                                        Width="200"
+                                        Height="45"
                                         Margin="0,5"
-                                        FontSize="18"
+                                        FontSize="19"
+                                        FontWeight="Bold"
                                         Click="PlayButton_Click"/>
 
-                                <Button Content="REGISTER"
-                                        Width="160"
-                                        Height="40"
-                                        Margin="0,5"
-                                        FontSize="18"
-                                        Click="RegisterButton_Click"/>
-
                                 <Button Content="OPTIONS"
-                                        Width="160"
-                                        Height="40"
+                                        Width="200"
+                                        Height="45"
                                         Margin="0,5"
-                                        FontSize="18"
+                                        FontSize="19"
                                         Click="OptionsButton_Click"/>
 
                                 <Button Content="HIGHSCORES"
-                                        Width="160"
-                                        Height="40"
+                                        Width="200"
+                                        Height="45"
                                         Margin="0,5"
-                                        FontSize="18"
+                                        FontSize="19"
                                         Click="HighScoresButton_Click"/>
 
-                                <Button Content="EXIT"
-                                        Width="160"
-                                        Height="40"
+                                <Button Content="LOGOUT"
+                                        Width="200"
+                                        Height="45"
                                         Margin="0,5"
-                                        FontSize="18"
+                                        FontSize="19"
+                                        Click="LogoutButton_Click"/>
+
+                                <Button Content="EXIT"
+                                        Width="200"
+                                        Height="45"
+                                        Margin="0,5"
+                                        FontSize="19"
                                         Click="ExitButton_Click"/>
 
                         </StackPanel>
                 </Grid>
 
                 <Grid x:Name="GameScreen"
-                      Visibility="Collapsed">
+                      Visibility="Collapsed"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      RenderTransformOrigin="0.5,0.5">
 
-                        <UniformGrid x:Name="GameBoard"
-                                     Rows="20"
-                                     Columns="10"
-                                     Margin="10"/>
+                        <Grid.RenderTransform>
+                                <TranslateTransform x:Name="GameScreenTransform"/>
+                        </Grid.RenderTransform>
 
-                        <StackPanel HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Margin="15,8,0,0"
-                                    Panel.ZIndex="1">
+                        <Grid Width="620"
+                              Height="720">
 
-                                <TextBlock Text="Next"
-                                           Foreground="Gray"
-                                           FontSize="12"/>
+                                <Border Width="320"
+                                        Height="720"
+                                        HorizontalAlignment="Left"
+                                        BorderBrush="#B89B4A"
+                                        BorderThickness="2"
+                                        CornerRadius="5"
+                                        Padding="4">
 
-                                <UniformGrid x:Name="NextPiecePreview"
-                                             Rows="4"
-                                             Columns="4"
-                                             Width="56"
-                                             Height="56"
-                                             Margin="0,2,0,0"/>
-                        </StackPanel>
+                                        <UniformGrid x:Name="GameBoard"
+                                                     Rows="20"
+                                                     Columns="10"
+                                                     Background="#050505"/>
 
-                        <StackPanel HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Margin="0,8,15,0"
-                                    Panel.ZIndex="1">
+                                </Border>
 
-                                <TextBlock x:Name="ScoreText"
-                                           Text="Score: 0"
-                                           Foreground="White"
-                                           FontSize="16"
-                                           HorizontalAlignment="Right"/>
+                                <StackPanel HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Width="250"
+                                            Margin="0,0,0,0">
 
-                        </StackPanel>
+                                        <Border Background="#111111"
+                                                BorderBrush="#B89B4A"
+                                                BorderThickness="2"
+                                                CornerRadius="5"
+                                                Padding="15"
+                                                Margin="0,0,0,15">
 
-                        <Grid x:Name="GameOverScreen"
-                              Background="#DD000000"
-                              Visibility="Collapsed"
-                              Panel.ZIndex="2">
+                                                <StackPanel>
 
-                                <StackPanel HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
+                                                        <TextBlock Text="PLAYER"
+                                                                   Foreground="Gray"
+                                                                   FontSize="12"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,5"/>
 
-                                        <TextBlock Text="GAME OVER"
-                                                   Foreground="White"
-                                                   FontSize="36"
-                                                   FontWeight="Bold"
-                                                   HorizontalAlignment="Center"
-                                                   Margin="0,0,0,15"/>
+                                                        <TextBlock x:Name="GamePlayerText"
+                                                                   Text="Player"
+                                                                   Foreground="White"
+                                                                   FontSize="22"
+                                                                   FontWeight="Bold"
+                                                                   HorizontalAlignment="Center"/>
 
-                                        <TextBlock x:Name="FinalScoreText"
-                                                   Text="Score: 0"
-                                                   Foreground="White"
-                                                   FontSize="24"
-                                                   HorizontalAlignment="Center"
-                                                   Margin="0,0,0,15"/>
+                                                </StackPanel>
 
-                                        <TextBlock Text="Enter your name:"
-                                                   Foreground="White"
-                                                   FontSize="16"
-                                                   HorizontalAlignment="Center"
-                                                   Margin="0,0,0,5"/>
+                                        </Border>
 
-                                        <TextBox x:Name="PlayerNameTextBox"
-                                                 Width="140"
-                                                 Height="30"
-                                                 MaxLength="8"
-                                                 HorizontalContentAlignment="Center"
-                                                 FontSize="16"
-                                                 Margin="0,0,0,10"/>
+                                        <Border Background="#111111"
+                                                BorderBrush="#B89B4A"
+                                                BorderThickness="2"
+                                                CornerRadius="5"
+                                                Padding="12"
+                                                Margin="0,0,0,15">
 
-                                        <Button Content="SAVE SCORE"
-                                                Width="140"
-                                                Height="35"
-                                                FontSize="15"
-                                                Click="SaveScoreButton_Click"/>
+                                                <StackPanel>
 
-                                        <Button Content="Restart"
-                                                Width="140"
-                                                Height="35"
-                                                FontSize="15"
-                                                Margin="0,8,0,0"
-                                                Click="RestartButton_Click"/>
+                                                        <TextBlock Text="NEXT"
+                                                                   Foreground="Gray"
+                                                                   FontSize="12"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,8"/>
 
-                                        <Button Content="Main Menu"
-                                                Width="140"
-                                                Height="35"
-                                                FontSize="15"
-                                                Margin="0,8,0,0"
-                                                Click="MainMenuButton_Click"/>
+                                                        <Border BorderBrush="#333333"
+                                                                BorderThickness="1"
+                                                                Width="100"
+                                                                Height="100"
+                                                                HorizontalAlignment="Center"
+                                                                Padding="4">
+
+                                                                <UniformGrid x:Name="NextPiecePreview"
+                                                                             Rows="5"
+                                                                             Columns="5"
+                                                                             Background="#050505"/>
+
+                                                        </Border>
+
+                                                </StackPanel>
+
+                                        </Border>
+
+                                        <Border Background="#111111"
+                                                BorderBrush="#B89B4A"
+                                                BorderThickness="2"
+                                                CornerRadius="5"
+                                                Padding="15"
+                                                Margin="0,0,0,15">
+
+                                                <StackPanel>
+
+                                                        <TextBlock Text="SCORE"
+                                                                   Foreground="Gray"
+                                                                   FontSize="12"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,5"/>
+
+                                                        <TextBlock x:Name="ScoreText"
+                                                                   Text="0"
+                                                                   Foreground="White"
+                                                                   FontSize="32"
+                                                                   FontWeight="Bold"
+                                                                   HorizontalAlignment="Center"/>
+
+                                                </StackPanel>
+
+                                        </Border>
+
+                                        <Border Background="#111111"
+                                                BorderBrush="#333333"
+                                                BorderThickness="1"
+                                                CornerRadius="5"
+                                                Padding="15">
+
+                                                <StackPanel>
+
+                                                        <TextBlock Text="CONTROLS"
+                                                                   Foreground="Gray"
+                                                                   FontSize="12"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,10"/>
+
+                                                        <TextBlock Text="← →  Move"
+                                                                   Foreground="White"
+                                                                   FontSize="14"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,2"/>
+
+                                                        <TextBlock Text="↑  Rotate"
+                                                                   Foreground="White"
+                                                                   FontSize="14"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,2"/>
+
+                                                        <TextBlock Text="↓  Soft Drop"
+                                                                   Foreground="White"
+                                                                   FontSize="14"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,2"/>
+
+                                                        <TextBlock Text="SPACE  Hard Drop"
+                                                                   Foreground="White"
+                                                                   FontSize="14"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,2"/>
+
+                                                        <TextBlock Text="ESC  Pause"
+                                                                   Foreground="White"
+                                                                   FontSize="14"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,2"/>
+
+                                                </StackPanel>
+
+                                        </Border>
 
                                 </StackPanel>
+
+                                <Grid x:Name="GameOverScreen"
+                                      Background="#DD000000"
+                                      Visibility="Collapsed"
+                                      Panel.ZIndex="2">
+
+                                        <Border Width="360"
+                                                Padding="30"
+                                                Background="#111111"
+                                                BorderBrush="#B89B4A"
+                                                BorderThickness="2"
+                                                CornerRadius="6"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+
+                                                <StackPanel>
+
+                                                        <TextBlock Text="GAME OVER"
+                                                                   Foreground="White"
+                                                                   FontSize="36"
+                                                                   FontWeight="Bold"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,15"/>
+
+                                                        <TextBlock x:Name="FinalScoreText"
+                                                                   Text="Score: 0"
+                                                                   Foreground="White"
+                                                                   FontSize="24"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,10"/>
+
+                                                        <TextBlock x:Name="GameOverPlayerText"
+                                                                   Text="Player:"
+                                                                   Foreground="Gray"
+                                                                   FontSize="16"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,25"/>
+
+                                                        <Button Content="SAVE SCORE"
+                                                                Width="180"
+                                                                Height="40"
+                                                                FontSize="16"
+                                                                Click="SaveScoreButton_Click"/>
+
+                                                        <Button Content="RESTART"
+                                                                Width="180"
+                                                                Height="40"
+                                                                FontSize="16"
+                                                                Margin="0,8,0,0"
+                                                                Click="RestartButton_Click"/>
+
+                                                        <Button Content="MAIN MENU"
+                                                                Width="180"
+                                                                Height="40"
+                                                                FontSize="16"
+                                                                Margin="0,8,0,0"
+                                                                Click="MainMenuButton_Click"/>
+
+                                                </StackPanel>
+
+                                        </Border>
+
+                                </Grid>
+
+                                <Grid x:Name="PauseScreen"
+                                      Background="#DD000000"
+                                      Visibility="Collapsed"
+                                      Panel.ZIndex="4">
+
+                                        <Border Width="350"
+                                                Padding="30"
+                                                Background="#111111"
+                                                BorderBrush="#B89B4A"
+                                                BorderThickness="2"
+                                                CornerRadius="6"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+
+                                                <StackPanel>
+
+                                                        <TextBlock Text="PAUSED"
+                                                                   Foreground="White"
+                                                                   FontSize="36"
+                                                                   FontWeight="Bold"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,25"/>
+
+                                                        <Button Content="RESUME"
+                                                                Width="180"
+                                                                Height="40"
+                                                                FontSize="18"
+                                                                Margin="0,5"
+                                                                Click="ResumeButton_Click"/>
+
+                                                        <Button Content="MAIN MENU"
+                                                                Width="180"
+                                                                Height="40"
+                                                                FontSize="18"
+                                                                Margin="0,5"
+                                                                Click="PauseMainMenuButton_Click"/>
+
+                                                        <Button Content="EXIT"
+                                                                Width="180"
+                                                                Height="40"
+                                                                FontSize="18"
+                                                                Margin="0,5"
+                                                                Click="PauseExitButton_Click"/>
+
+                                                </StackPanel>
+
+                                        </Border>
+
+                                </Grid>
+
                         </Grid>
                 </Grid>
 
                 <Grid x:Name="OptionsScreen"
-                      Background="Black"
+                      Background="#080808"
                       Visibility="Collapsed"
                       Panel.ZIndex="4">
 
@@ -189,88 +523,109 @@
                 </Grid>
 
                 <Grid x:Name="HighScoresScreen"
-                      Background="Black"
+                      Background="#080808"
                       Visibility="Collapsed"
                       Panel.ZIndex="4">
 
-                        <StackPanel HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
+                        <Border Width="400"
+                                Padding="30"
+                                Background="#111111"
+                                BorderBrush="#B89B4A"
+                                BorderThickness="2"
+                                CornerRadius="6"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
 
-                                <TextBlock Text="HIGHSCORES"
-                                           Foreground="White"
-                                           FontSize="32"
-                                           FontWeight="Bold"
-                                           HorizontalAlignment="Center"
-                                           Margin="0,0,0,25"/>
+                                <StackPanel>
 
-                                <StackPanel x:Name="HighScoresList"
-                                            Width="220"
-                                            Margin="0,0,0,25"/>
+                                        <TextBlock Text="HIGHSCORES"
+                                                   Foreground="White"
+                                                   FontSize="32"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,25"/>
 
-                                <Button Content="BACK"
-                                        Width="160"
-                                        Height="40"
-                                        FontSize="18"
-                                        Click="BackToMenuButton_Click"/>
+                                        <StackPanel x:Name="HighScoresList"
+                                                    Margin="0,0,0,25"/>
 
-                        </StackPanel>
+                                        <Button Content="BACK"
+                                                Width="160"
+                                                Height="40"
+                                                FontSize="18"
+                                                HorizontalAlignment="Center"
+                                                Click="BackToMenuButton_Click"/>
+
+                                </StackPanel>
+
+                        </Border>
                 </Grid>
 
                 <Grid x:Name="RegisterScreen"
-                      Background="Black"
+                      Background="#080808"
                       Visibility="Collapsed"
                       Panel.ZIndex="5">
 
-                        <StackPanel HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
+                        <Border Width="430"
+                                Padding="45"
+                                Background="#111111"
+                                BorderBrush="#B89B4A"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
 
-                                <TextBlock Text="REGISTER"
-                                           Foreground="White"
-                                           FontSize="36"
-                                           FontWeight="Bold"
-                                           HorizontalAlignment="Center"
-                                           Margin="0,0,0,30"/>
+                                <StackPanel>
 
-                                <TextBlock Text="Username"
-                                           Foreground="White"
-                                           FontSize="16"
-                                           HorizontalAlignment="Center"
-                                           Margin="0,0,0,5"/>
+                                        <TextBlock Text="REGISTER"
+                                                   Foreground="White"
+                                                   FontSize="36"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,30"/>
 
-                                <TextBox x:Name="RegisterUsernameTextBox"
-                                         Width="160"
-                                         Height="30"
-                                         MaxLength="20"
-                                         HorizontalContentAlignment="Center"
-                                         FontSize="16"
-                                         Margin="0,0,0,15"/>
+                                        <TextBlock Text="USERNAME"
+                                                   Foreground="Gray"
+                                                   FontSize="12"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,5"/>
 
-                                <TextBlock Text="Password"
-                                           Foreground="White"
-                                           FontSize="16"
-                                           HorizontalAlignment="Center"
-                                           Margin="0,0,0,5"/>
+                                        <TextBox x:Name="RegisterUsernameTextBox"
+                                                 Width="220"
+                                                 Height="32"
+                                                 MaxLength="20"
+                                                 HorizontalContentAlignment="Center"
+                                                 FontSize="16"
+                                                 Margin="0,0,0,15"/>
 
-                                <PasswordBox x:Name="RegisterPasswordBox"
-                                             Width="160"
-                                             Height="30"
-                                             FontSize="16"
-                                             Margin="0,0,0,20"/>
+                                        <TextBlock Text="PASSWORD"
+                                                   Foreground="Gray"
+                                                   FontSize="12"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,5"/>
 
-                                <Button Content="REGISTER"
-                                        Width="160"
-                                        Height="40"
-                                        FontSize="18"
-                                        Margin="0,0,0,10"
-                                        Click="CreateAccountButton_Click"/>
+                                        <PasswordBox x:Name="RegisterPasswordBox"
+                                                     Width="220"
+                                                     Height="32"
+                                                     FontSize="16"
+                                                     Margin="0,0,0,25"/>
 
-                                <Button Content="BACK"
-                                        Width="160"
-                                        Height="40"
-                                        FontSize="18"
-                                        Click="BackToMenuButton_Click"/>
+                                        <Button Content="REGISTER"
+                                                Width="220"
+                                                Height="40"
+                                                FontSize="17"
+                                                FontWeight="Bold"
+                                                Margin="0,0,0,10"
+                                                Click="CreateAccountButton_Click"/>
 
-                        </StackPanel>
+                                        <Button Content="BACK"
+                                                Width="220"
+                                                Height="40"
+                                                FontSize="17"
+                                                Click="BackToLoginButton_Click"/>
+
+                                </StackPanel>
+
+                        </Border>
                 </Grid>
 
         </Grid>

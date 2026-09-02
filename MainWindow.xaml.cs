@@ -22,8 +22,12 @@ public partial class MainWindow : Window
 
     private TetrisPiece currentPiece = null!;
     private TetrisPiece nextPiece = null!;
+    private string? currentUsername;
     private int score;
     private bool gameOver;
+    private bool isPaused;
+    private bool isShaking;
+    private bool isClearingLines;
 
     public MainWindow()
     {
@@ -38,23 +42,55 @@ public partial class MainWindow : Window
 
         KeyDown += MainWindow_KeyDown;
 
-        ShowMainMenu();
+        ShowLogin();
     }
 
-    private void PlayButton_Click(object sender, RoutedEventArgs e)
+    private void LoginButton_Click(object sender, RoutedEventArgs e)
     {
-        ShowGame();
-        StartNewGame();
-        gameTimer.Start();
-        Focus();
+        string username = LoginUsernameTextBox.Text.Trim();
+        string password = LoginPasswordBox.Password;
+
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            MessageBox.Show("Please enter your username.");
+            LoginUsernameTextBox.Focus();
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            MessageBox.Show("Please enter your password.");
+            LoginPasswordBox.Focus();
+            return;
+        }
+
+        User? user = userManager.Login(username, password);
+
+        if (user == null)
+        {
+            MessageBox.Show("Invalid username or password.");
+            LoginPasswordBox.SelectAll();
+            LoginPasswordBox.Focus();
+            return;
+        }
+
+        currentUsername = user.Username;
+        WelcomeText.Text = $"Welcome, {currentUsername}";
+
+        LoginUsernameTextBox.Text = "";
+        LoginPasswordBox.Password = "";
+
+        ShowMainMenu();
     }
 
     private void RegisterButton_Click(object sender, RoutedEventArgs e)
     {
-        MainMenuScreen.Visibility = Visibility.Collapsed;
+        LoginScreen.Visibility = Visibility.Collapsed;
         RegisterScreen.Visibility = Visibility.Visible;
+
         RegisterUsernameTextBox.Text = "";
         RegisterPasswordBox.Password = "";
+
         RegisterUsernameTextBox.Focus();
     }
 
@@ -100,12 +136,35 @@ public partial class MainWindow : Window
             return;
         }
 
-        MessageBox.Show("Account created successfully.");
+        MessageBox.Show("Account created successfully. You can now log in.");
 
         RegisterUsernameTextBox.Text = "";
         RegisterPasswordBox.Password = "";
 
-        ShowMainMenu();
+        ShowLogin();
+    }
+
+    private void BackToLoginButton_Click(object sender, RoutedEventArgs e)
+    {
+        ShowLogin();
+    }
+
+    private void LogoutButton_Click(object sender, RoutedEventArgs e)
+    {
+        gameTimer.Stop();
+        isPaused = false;
+        gameOver = false;
+        currentUsername = null;
+
+        ShowLogin();
+    }
+
+    private void PlayButton_Click(object sender, RoutedEventArgs e)
+    {
+        ShowGame();
+        StartNewGame();
+        gameTimer.Start();
+        Focus();
     }
 
     private void OptionsButton_Click(object sender, RoutedEventArgs e)
@@ -118,6 +177,7 @@ public partial class MainWindow : Window
     {
         MainMenuScreen.Visibility = Visibility.Collapsed;
         HighScoresScreen.Visibility = Visibility.Visible;
+
         DisplayHighScores();
     }
 
@@ -128,33 +188,61 @@ public partial class MainWindow : Window
 
     private void BackToMenuButton_Click(object sender, RoutedEventArgs e)
     {
+        gameTimer.Stop();
+        isPaused = false;
+
         ShowMainMenu();
     }
 
     private void MainMenuButton_Click(object sender, RoutedEventArgs e)
     {
         gameTimer.Stop();
+        isPaused = false;
+
         ShowMainMenu();
+    }
+
+    private void ShowLogin()
+    {
+        LoginScreen.Visibility = Visibility.Visible;
+        MainMenuScreen.Visibility = Visibility.Collapsed;
+        GameScreen.Visibility = Visibility.Collapsed;
+        OptionsScreen.Visibility = Visibility.Collapsed;
+        HighScoresScreen.Visibility = Visibility.Collapsed;
+        RegisterScreen.Visibility = Visibility.Collapsed;
+        GameOverScreen.Visibility = Visibility.Collapsed;
+        PauseScreen.Visibility = Visibility.Collapsed;
+
+        LoginUsernameTextBox.Focus();
     }
 
     private void ShowMainMenu()
     {
+        LoginScreen.Visibility = Visibility.Collapsed;
         MainMenuScreen.Visibility = Visibility.Visible;
         GameScreen.Visibility = Visibility.Collapsed;
         OptionsScreen.Visibility = Visibility.Collapsed;
         HighScoresScreen.Visibility = Visibility.Collapsed;
         RegisterScreen.Visibility = Visibility.Collapsed;
         GameOverScreen.Visibility = Visibility.Collapsed;
+        PauseScreen.Visibility = Visibility.Collapsed;
+
+        WelcomeText.Text = $"Welcome, {currentUsername}";
     }
 
     private void ShowGame()
     {
+        LoginScreen.Visibility = Visibility.Collapsed;
         MainMenuScreen.Visibility = Visibility.Collapsed;
         GameScreen.Visibility = Visibility.Visible;
         OptionsScreen.Visibility = Visibility.Collapsed;
         HighScoresScreen.Visibility = Visibility.Collapsed;
         RegisterScreen.Visibility = Visibility.Collapsed;
         GameOverScreen.Visibility = Visibility.Collapsed;
+        PauseScreen.Visibility = Visibility.Collapsed;
+
+        GameScreenTransform.X = 0;
+        GameScreenTransform.Y = 0;
     }
 
     private void StartNewGame()
@@ -170,8 +258,14 @@ public partial class MainWindow : Window
 
         score = 0;
         gameOver = false;
+        isPaused = false;
+        isClearingLines = false;
+
+        GameScreenTransform.X = 0;
+        GameScreenTransform.Y = 0;
 
         GameOverScreen.Visibility = Visibility.Collapsed;
+        PauseScreen.Visibility = Visibility.Collapsed;
 
         currentPiece = CreateRandomPiece();
         nextPiece = CreateRandomPiece();
@@ -203,7 +297,7 @@ public partial class MainWindow : Window
 
     private void CreateNextPiecePreview()
     {
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 25; i++)
         {
             Border cell = new Border
             {
@@ -216,9 +310,9 @@ public partial class MainWindow : Window
         }
     }
 
-    private void GameTimer_Tick(object? sender, EventArgs e)
+    private async void GameTimer_Tick(object? sender, EventArgs e)
     {
-        if (gameOver)
+        if (gameOver || isPaused || isClearingLines)
         {
             return;
         }
@@ -230,7 +324,8 @@ public partial class MainWindow : Window
         else
         {
             LockPiece();
-            ClearCompletedLines();
+
+            await ClearCompletedLines();
 
             if (!SpawnNewPiece())
             {
@@ -242,14 +337,24 @@ public partial class MainWindow : Window
         DrawBoard();
     }
 
-    private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+    private async void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.OriginalSource is TextBox || e.OriginalSource is PasswordBox)
+        if (e.Key == Key.Escape)
+        {
+            if (!gameOver && GameScreen.Visibility == Visibility.Visible)
+            {
+                TogglePause();
+            }
+
+            return;
+        }
+
+        if (GameScreen.Visibility != Visibility.Visible)
         {
             return;
         }
 
-        if (gameOver)
+        if (gameOver || isPaused || isClearingLines)
         {
             return;
         }
@@ -288,17 +393,177 @@ public partial class MainWindow : Window
                 }
 
                 LockPiece();
-                ClearCompletedLines();
+                ShakeScreen();
+
+                await ClearCompletedLines();
 
                 if (!SpawnNewPiece())
                 {
                     EndGame();
                     return;
                 }
+
                 break;
+
+            default:
+                return;
         }
 
         DrawBoard();
+    }
+
+    private async void ShakeScreen()
+    {
+        if (isShaking)
+        {
+            return;
+        }
+
+        isShaking = true;
+
+        GameScreenTransform.X = -3;
+        GameScreenTransform.Y = 1;
+
+        await Task.Delay(30);
+
+        GameScreenTransform.X = 3;
+        GameScreenTransform.Y = -1;
+
+        await Task.Delay(30);
+
+        GameScreenTransform.X = -2;
+        GameScreenTransform.Y = 0;
+
+        await Task.Delay(30);
+
+        GameScreenTransform.X = 2;
+        GameScreenTransform.Y = 0;
+
+        await Task.Delay(30);
+
+        GameScreenTransform.X = 0;
+        GameScreenTransform.Y = 0;
+
+        isShaking = false;
+    }
+
+    private async Task ClearCompletedLines()
+    {
+        List<int> completedLines = new();
+
+        for (int y = 0; y < GridHeight; y++)
+        {
+            if (IsLineFull(y))
+            {
+                completedLines.Add(y);
+            }
+        }
+
+        if (completedLines.Count == 0)
+        {
+            return;
+        }
+
+        isClearingLines = true;
+
+        foreach (int line in completedLines)
+        {
+            for (int x = 0; x < GridWidth; x++)
+            {
+                cells[x, line].Background = Brushes.White;
+            }
+        }
+
+        await Task.Delay(60);
+
+        foreach (int line in completedLines)
+        {
+            for (int x = 0; x < GridWidth; x++)
+            {
+                cells[x, line].Background = GetPieceColor(gridColors[x, line]);
+            }
+        }
+
+        await Task.Delay(60);
+
+        foreach (int line in completedLines)
+        {
+            for (int x = 0; x < GridWidth; x++)
+            {
+                cells[x, line].Background = Brushes.White;
+            }
+        }
+
+        await Task.Delay(60);
+
+        completedLines.Sort();
+        completedLines.Reverse();
+
+        foreach (int line in completedLines)
+        {
+            RemoveLine(line);
+        }
+
+        AddScore(completedLines.Count);
+
+        isClearingLines = false;
+    }
+
+    private void TogglePause()
+    {
+        if (isPaused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
+    }
+
+    private void PauseGame()
+    {
+        if (gameOver || isClearingLines)
+        {
+            return;
+        }
+
+        isPaused = true;
+        gameTimer.Stop();
+        PauseScreen.Visibility = Visibility.Visible;
+    }
+
+    private void ResumeGame()
+    {
+        if (gameOver)
+        {
+            return;
+        }
+
+        isPaused = false;
+        PauseScreen.Visibility = Visibility.Collapsed;
+        gameTimer.Start();
+
+        Focus();
+    }
+
+    private void ResumeButton_Click(object sender, RoutedEventArgs e)
+    {
+        ResumeGame();
+    }
+
+    private void PauseMainMenuButton_Click(object sender, RoutedEventArgs e)
+    {
+        gameTimer.Stop();
+        isPaused = false;
+        PauseScreen.Visibility = Visibility.Collapsed;
+
+        ShowMainMenu();
+    }
+
+    private void PauseExitButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 
     private bool CanMove(int moveX, int moveY)
@@ -314,6 +579,52 @@ public partial class MainWindow : Window
 
                 int newX = currentPiece.X + x + moveX;
                 int newY = currentPiece.Y + y + moveY;
+
+                if (newX < 0 || newX >= GridWidth)
+                {
+                    return false;
+                }
+
+                if (newY >= GridHeight)
+                {
+                    return false;
+                }
+
+                if (newY >= 0 && grid[newX, newY] == 1)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private int GetGhostY()
+    {
+        int ghostY = currentPiece.Y;
+
+        while (CanMoveFromPosition(currentPiece.X, ghostY + 1))
+        {
+            ghostY++;
+        }
+
+        return ghostY;
+    }
+
+    private bool CanMoveFromPosition(int positionX, int positionY)
+    {
+        for (int y = 0; y < currentPiece.Shape.GetLength(0); y++)
+        {
+            for (int x = 0; x < currentPiece.Shape.GetLength(1); x++)
+            {
+                if (currentPiece.Shape[y, x] == 0)
+                {
+                    continue;
+                }
+
+                int newX = positionX + x;
+                int newY = positionY + y;
 
                 if (newX < 0 || newX >= GridWidth)
                 {
@@ -366,23 +677,6 @@ public partial class MainWindow : Window
                 }
             }
         }
-    }
-
-    private void ClearCompletedLines()
-    {
-        int linesCleared = 0;
-
-        for (int y = GridHeight - 1; y >= 0; y--)
-        {
-            if (IsLineFull(y))
-            {
-                RemoveLine(y);
-                linesCleared++;
-                y++;
-            }
-        }
-
-        AddScore(linesCleared);
     }
 
     private bool IsLineFull(int y)
@@ -448,32 +742,34 @@ public partial class MainWindow : Window
     private TetrisPiece CreateRandomPiece()
     {
         TetrominoType type = (TetrominoType)random.Next(7);
+
         return new TetrisPiece(type);
     }
 
     private void EndGame()
     {
         gameOver = true;
+        isPaused = false;
+
         gameTimer.Stop();
 
         FinalScoreText.Text = $"Score: {score}";
-        PlayerNameTextBox.Text = "";
+        GameOverPlayerText.Text = $"Player: {currentUsername}";
+
+        PauseScreen.Visibility = Visibility.Collapsed;
         GameOverScreen.Visibility = Visibility.Visible;
-        PlayerNameTextBox.Focus();
     }
 
     private void SaveScoreButton_Click(object sender, RoutedEventArgs e)
     {
-        string name = PlayerNameTextBox.Text.Trim();
-
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(currentUsername))
         {
-            MessageBox.Show("Please enter your name.");
-            PlayerNameTextBox.Focus();
+            MessageBox.Show("No player is currently logged in.");
+            ShowLogin();
             return;
         }
 
-        highScoreManager.SaveScore(name, score);
+        highScoreManager.SaveScore(currentUsername, score);
         DisplayHighScores();
 
         GameOverScreen.Visibility = Visibility.Collapsed;
@@ -522,6 +818,7 @@ public partial class MainWindow : Window
     {
         StartNewGame();
         gameTimer.Start();
+
         Focus();
     }
 
@@ -555,7 +852,34 @@ public partial class MainWindow : Window
             }
         }
 
+        DrawGhostPiece();
         DrawPiece();
+    }
+
+    private void DrawGhostPiece()
+    {
+        int ghostY = GetGhostY();
+
+        SolidColorBrush baseBrush = (SolidColorBrush)GetPieceColor(currentPiece.Type);
+
+        SolidColorBrush ghostColor = new SolidColorBrush(baseBrush.Color) { Opacity = 0.2 };
+
+        for (int y = 0; y < currentPiece.Shape.GetLength(0); y++)
+        {
+            for (int x = 0; x < currentPiece.Shape.GetLength(1); x++)
+            {
+                if (currentPiece.Shape[y, x] == 1)
+                {
+                    int boardX = currentPiece.X + x;
+                    int boardY = ghostY + y;
+
+                    if (boardX >= 0 && boardX < GridWidth && boardY >= 0 && boardY < GridHeight)
+                    {
+                        cells[boardX, boardY].Background = ghostColor;
+                    }
+                }
+            }
+        }
     }
 
     private void DrawPiece()
@@ -586,8 +910,30 @@ public partial class MainWindow : Window
 
         Brush color = GetPieceColor(nextPiece.Type);
 
-        int offsetX = (4 - nextPiece.Shape.GetLength(1)) / 2;
-        int offsetY = (4 - nextPiece.Shape.GetLength(0)) / 2;
+        int minX = nextPiece.Shape.GetLength(1);
+        int maxX = -1;
+        int minY = nextPiece.Shape.GetLength(0);
+        int maxY = -1;
+
+        for (int y = 0; y < nextPiece.Shape.GetLength(0); y++)
+        {
+            for (int x = 0; x < nextPiece.Shape.GetLength(1); x++)
+            {
+                if (nextPiece.Shape[y, x] == 1)
+                {
+                    minX = Math.Min(minX, x);
+                    maxX = Math.Max(maxX, x);
+                    minY = Math.Min(minY, y);
+                    maxY = Math.Max(maxY, y);
+                }
+            }
+        }
+
+        int pieceWidth = maxX - minX + 1;
+        int pieceHeight = maxY - minY + 1;
+
+        int offsetX = (5 - pieceWidth) / 2 - minX;
+        int offsetY = (5 - pieceHeight) / 2 - minY;
 
         for (int y = 0; y < nextPiece.Shape.GetLength(0); y++)
         {
@@ -598,7 +944,7 @@ public partial class MainWindow : Window
                     int previewX = offsetX + x;
                     int previewY = offsetY + y;
 
-                    int index = previewY * 4 + previewX;
+                    int index = previewY * 5 + previewX;
 
                     if (index >= 0 && index < NextPiecePreview.Children.Count)
                     {
