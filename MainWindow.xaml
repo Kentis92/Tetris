@@ -5,20 +5,902 @@
         WindowState="Maximized"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Background="#080808">
+        Background="#030405">
+
+        <Window.Resources>
+
+                <LinearGradientBrush x:Key="ScreenBackground"
+                                     StartPoint="0,0"
+                                     EndPoint="1,1">
+                        <GradientStop Color="#030405"
+                                      Offset="0"/>
+                        <GradientStop Color="#080B0E"
+                                      Offset="0.5"/>
+                        <GradientStop Color="#020304"
+                                      Offset="1"/>
+                </LinearGradientBrush>
+
+                <RadialGradientBrush x:Key="GoldAtmosphere"
+                                     Center="0.18,0.28"
+                                     GradientOrigin="0.18,0.28"
+                                     RadiusX="0.75"
+                                     RadiusY="0.75">
+                        <GradientStop Color="#302710"
+                                      Offset="0"/>
+                        <GradientStop Color="#171309"
+                                      Offset="0.35"/>
+                        <GradientStop Color="#080808"
+                                      Offset="0.72"/>
+                        <GradientStop Color="#000000"
+                                      Offset="1"/>
+                </RadialGradientBrush>
+
+                <RadialGradientBrush x:Key="BlueAtmosphere"
+                                     Center="0.82,0.72"
+                                     GradientOrigin="0.82,0.72"
+                                     RadiusX="0.72"
+                                     RadiusY="0.72">
+                        <GradientStop Color="#0C202B"
+                                      Offset="0"/>
+                        <GradientStop Color="#08141B"
+                                      Offset="0.38"/>
+                        <GradientStop Color="#050809"
+                                      Offset="0.72"/>
+                        <GradientStop Color="#000000"
+                                      Offset="1"/>
+                </RadialGradientBrush>
+
+                <LinearGradientBrush x:Key="PanelBackground"
+                                     StartPoint="0,0"
+                                     EndPoint="0,1">
+                        <GradientStop Color="#181818"
+                                      Offset="0"/>
+                        <GradientStop Color="#0D0D0D"
+                                      Offset="1"/>
+                </LinearGradientBrush>
+
+                <LinearGradientBrush x:Key="ButtonBackground"
+                                     StartPoint="0,0"
+                                     EndPoint="0,1">
+                        <GradientStop Color="#1C1C1C"
+                                      Offset="0"/>
+                        <GradientStop Color="#101010"
+                                      Offset="1"/>
+                </LinearGradientBrush>
+
+                <Style x:Key="MenuButtonStyle"
+                       TargetType="Button">
+
+                        <Setter Property="Width"
+                                Value="240"/>
+
+                        <Setter Property="Height"
+                                Value="52"/>
+
+                        <Setter Property="Margin"
+                                Value="0,6"/>
+
+                        <Setter Property="FontSize"
+                                Value="17"/>
+
+                        <Setter Property="FontWeight"
+                                Value="Bold"/>
+
+                        <Setter Property="Foreground"
+                                Value="White"/>
+
+                        <Setter Property="Background"
+                                Value="{StaticResource ButtonBackground}"/>
+
+                        <Setter Property="BorderBrush"
+                                Value="#B89B4A"/>
+
+                        <Setter Property="BorderThickness"
+                                Value="1"/>
+
+                        <Setter Property="Cursor"
+                                Value="Hand"/>
+
+                        <Setter Property="Template">
+
+                                <Setter.Value>
+
+                                        <ControlTemplate TargetType="Button">
+
+                                                <Border x:Name="ButtonBorder"
+                                                        Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="5">
+
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+
+                                                </Border>
+
+                                                <ControlTemplate.Triggers>
+
+                                                        <Trigger Property="IsMouseOver"
+                                                                 Value="True">
+
+                                                                <Setter TargetName="ButtonBorder"
+                                                                        Property="Background"
+                                                                        Value="#29251A"/>
+
+                                                                <Setter TargetName="ButtonBorder"
+                                                                        Property="BorderBrush"
+                                                                        Value="#E0C46B"/>
+
+                                                        </Trigger>
+
+                                                        <Trigger Property="IsPressed"
+                                                                 Value="True">
+
+                                                                <Setter TargetName="ButtonBorder"
+                                                                        Property="Background"
+                                                                        Value="#3A321D"/>
+
+                                                                <Setter TargetName="ButtonBorder"
+                                                                        Property="BorderBrush"
+                                                                        Value="#F0D77A"/>
+
+                                                        </Trigger>
+
+                                                        <Trigger Property="IsEnabled"
+                                                                 Value="False">
+
+                                                                <Setter TargetName="ButtonBorder"
+                                                                        Property="Opacity"
+                                                                        Value="0.45"/>
+
+                                                        </Trigger>
+
+                                                </ControlTemplate.Triggers>
+
+                                        </ControlTemplate>
+
+                                </Setter.Value>
+
+                        </Setter>
+
+                </Style>
+
+                <Style x:Key="LogoLetterStyle"
+                       TargetType="TextBlock">
+
+                        <Setter Property="FontSize"
+                                Value="72"/>
+
+                        <Setter Property="FontWeight"
+                                Value="Black"/>
+
+                        <Setter Property="Margin"
+                                Value="1,0"/>
+
+                </Style>
+
+                <Style x:Key="ScreenTitleStyle"
+                       TargetType="TextBlock">
+
+                        <Setter Property="Foreground"
+                                Value="White"/>
+
+                        <Setter Property="FontSize"
+                                Value="38"/>
+
+                        <Setter Property="FontWeight"
+                                Value="Bold"/>
+
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center"/>
+
+                </Style>
+
+                <DrawingBrush x:Key="AnimatedGridBrush"
+                              TileMode="Tile"
+                              Viewport="0,0,80,80"
+                              ViewportUnits="Absolute"
+                              Viewbox="0,0,80,80"
+                              ViewboxUnits="Absolute">
+
+                        <DrawingBrush.Drawing>
+
+                                <DrawingGroup>
+
+                                        <GeometryDrawing Brush="#05080A"
+                                                         Geometry="M0,0 L80,0 L80,80 L0,80 Z"/>
+
+                                        <GeometryDrawing Brush="#263238"
+                                                         Geometry="M0,0 L80,0 L80,1 L0,1 Z M0,0 L1,0 L1,80 L0,80 Z"/>
+
+                                </DrawingGroup>
+
+                        </DrawingBrush.Drawing>
+
+                </DrawingBrush>
+
+                <Style x:Key="PanelStyle"
+                       TargetType="Border">
+
+                        <Setter Property="Background"
+                                Value="{StaticResource PanelBackground}"/>
+
+                        <Setter Property="BorderBrush"
+                                Value="#B89B4A"/>
+
+                        <Setter Property="BorderThickness"
+                                Value="1"/>
+
+                        <Setter Property="CornerRadius"
+                                Value="8"/>
+
+                </Style>
+
+        </Window.Resources>
 
         <Grid>
 
+                <Canvas x:Name="AnimatedBackground"
+                        Panel.ZIndex="0"
+                        IsHitTestVisible="False"
+                        ClipToBounds="True">
+
+                        <Rectangle Width="3000"
+                                   Height="2000"
+                                   Fill="{StaticResource ScreenBackground}"/>
+
+                        <Rectangle Width="3000"
+                                   Height="2000"
+                                   Fill="{StaticResource GoldAtmosphere}"
+                                   Opacity="0.78"/>
+
+                        <Rectangle Width="3000"
+                                   Height="2000"
+                                   Fill="{StaticResource BlueAtmosphere}"
+                                   Opacity="0.58"/>
+
+                        <Rectangle Width="3000"
+                                   Height="2000"
+                                   Fill="{StaticResource AnimatedGridBrush}"
+                                   Opacity="0.40">
+
+                                <Rectangle.RenderTransform>
+
+                                        <TranslateTransform x:Name="GridTransform"/>
+
+                                </Rectangle.RenderTransform>
+
+                                <Rectangle.Triggers>
+
+                                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                <BeginStoryboard>
+
+                                                        <Storyboard>
+
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                                 From="0"
+                                                                                 To="80"
+                                                                                 Duration="0:0:12"
+                                                                                 RepeatBehavior="Forever"/>
+
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                                                 From="0"
+                                                                                 To="80"
+                                                                                 Duration="0:0:24"
+                                                                                 RepeatBehavior="Forever"/>
+
+                                                        </Storyboard>
+
+                                                </BeginStoryboard>
+
+                                        </EventTrigger>
+
+                                </Rectangle.Triggers>
+
+                        </Rectangle>
+
+                        <Ellipse Width="1100"
+                                 Height="1100"
+                                 Canvas.Left="-420"
+                                 Canvas.Top="-360"
+                                 Fill="#B89B4A"
+                                 Opacity="0.035"/>
+
+                        <Ellipse Width="1000"
+                                 Height="1000"
+                                 Canvas.Left="1850"
+                                 Canvas.Top="650"
+                                 Fill="#2196C7"
+                                 Opacity="0.035"/>
+
+                        <Canvas Width="3000"
+                                Height="2000">
+
+                                <Polygon Points="0,0 120,0 120,40 80,40 80,80 40,80 40,40 0,40"
+                                         Canvas.Left="140"
+                                         Canvas.Top="170"
+                                         Fill="#B89B4A"
+                                         Opacity="0.18">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="60"
+                                                                 CenterY="40"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="140"
+                                                                                         To="310"
+                                                                                         Duration="0:0:34"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="170"
+                                                                                         To="80"
+                                                                                         Duration="0:0:29"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="0"
+                                                                                         To="360"
+                                                                                         Duration="0:1:05"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                                <Polygon Points="0,0 160,0 160,40 120,40 120,80 80,80 80,120 40,120 40,80 0,80"
+                                         Canvas.Left="1680"
+                                         Canvas.Top="130"
+                                         Fill="#4FC3F7"
+                                         Opacity="0.11">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="80"
+                                                                 CenterY="60"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="1680"
+                                                                                         To="1840"
+                                                                                         Duration="0:0:42"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="130"
+                                                                                         To="270"
+                                                                                         Duration="0:0:36"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="360"
+                                                                                         To="0"
+                                                                                         Duration="0:1:20"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                                <Polygon Points="0,0 40,0 40,40 120,40 120,80 40,80 40,120 0,120"
+                                         Canvas.Left="720"
+                                         Canvas.Top="650"
+                                         Fill="#B89B4A"
+                                         Opacity="0.09">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="60"
+                                                                 CenterY="60"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="720"
+                                                                                         To="870"
+                                                                                         Duration="0:0:40"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="650"
+                                                                                         To="550"
+                                                                                         Duration="0:0:43"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="0"
+                                                                                         To="-360"
+                                                                                         Duration="0:1:15"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                                <Polygon Points="0,0 200,0 200,40 160,40 160,80 120,80 120,40 0,40"
+                                         Canvas.Left="2240"
+                                         Canvas.Top="720"
+                                         Fill="#4FC3F7"
+                                         Opacity="0.08">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="100"
+                                                                 CenterY="40"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="2240"
+                                                                                         To="2070"
+                                                                                         Duration="0:0:48"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="720"
+                                                                                         To="860"
+                                                                                         Duration="0:0:41"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="0"
+                                                                                         To="360"
+                                                                                         Duration="0:1:30"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                                <Polygon Points="0,0 80,0 80,40 120,40 120,80 40,80 40,120 0,120"
+                                         Canvas.Left="430"
+                                         Canvas.Top="950"
+                                         Fill="#7E57C2"
+                                         Opacity="0.075">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="60"
+                                                                 CenterY="60"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="430"
+                                                                                         To="570"
+                                                                                         Duration="0:0:45"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="950"
+                                                                                         To="850"
+                                                                                         Duration="0:0:39"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="0"
+                                                                                         To="360"
+                                                                                         Duration="0:1:25"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                                <Polygon Points="0,0 120,0 120,40 40,40 40,80 0,80"
+                                         Canvas.Left="1400"
+                                         Canvas.Top="900"
+                                         Fill="#66BB6A"
+                                         Opacity="0.07">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="60"
+                                                                 CenterY="40"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="1400"
+                                                                                         To="1240"
+                                                                                         Duration="0:0:47"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="900"
+                                                                                         To="1030"
+                                                                                         Duration="0:0:43"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="360"
+                                                                                         To="0"
+                                                                                         Duration="0:1:35"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                                <Polygon Points="0,0 40,0 40,40 80,40 80,80 0,80"
+                                         Canvas.Left="2520"
+                                         Canvas.Top="300"
+                                         Fill="#EF5350"
+                                         Opacity="0.065">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="40"
+                                                                 CenterY="40"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="2520"
+                                                                                         To="2370"
+                                                                                         Duration="0:0:50"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="300"
+                                                                                         To="410"
+                                                                                         Duration="0:0:45"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="0"
+                                                                                         To="-360"
+                                                                                         Duration="0:1:40"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                                <Polygon Points="0,0 160,0 160,40 120,40 120,80 40,80 40,40 0,40"
+                                         Canvas.Left="1050"
+                                         Canvas.Top="250"
+                                         Fill="#FFCA28"
+                                         Opacity="0.055">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="80"
+                                                                 CenterY="40"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="1050"
+                                                                                         To="1190"
+                                                                                         Duration="0:0:52"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="250"
+                                                                                         To="160"
+                                                                                         Duration="0:0:48"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="0"
+                                                                                         To="360"
+                                                                                         Duration="0:1:50"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                                <Polygon Points="0,0 40,0 40,40 80,40 80,80 40,80 40,120 0,120"
+                                         Canvas.Left="1880"
+                                         Canvas.Top="1050"
+                                         Fill="#AB47BC"
+                                         Opacity="0.055">
+
+                                        <Polygon.RenderTransform>
+
+                                                <RotateTransform CenterX="40"
+                                                                 CenterY="60"/>
+
+                                        </Polygon.RenderTransform>
+
+                                        <Polygon.Triggers>
+
+                                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+
+                                                        <BeginStoryboard>
+
+                                                                <Storyboard>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                                         From="1880"
+                                                                                         To="1740"
+                                                                                         Duration="0:0:55"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                                                         From="1050"
+                                                                                         To="940"
+                                                                                         Duration="0:0:47"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                         From="360"
+                                                                                         To="0"
+                                                                                         Duration="0:1:45"
+                                                                                         RepeatBehavior="Forever"/>
+
+                                                                </Storyboard>
+
+                                                        </BeginStoryboard>
+
+                                                </EventTrigger>
+
+                                        </Polygon.Triggers>
+
+                                </Polygon>
+
+                        </Canvas>
+
+                        <Canvas Width="3000"
+                                Height="2000">
+
+                                <Ellipse Width="4"
+                                         Height="4"
+                                         Canvas.Left="260"
+                                         Canvas.Top="420"
+                                         Fill="#B89B4A"
+                                         Opacity="0.45"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="520"
+                                         Canvas.Top="250"
+                                         Fill="#4FC3F7"
+                                         Opacity="0.5"/>
+
+                                <Ellipse Width="5"
+                                         Height="5"
+                                         Canvas.Left="830"
+                                         Canvas.Top="330"
+                                         Fill="#FFFFFF"
+                                         Opacity="0.22"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="1180"
+                                         Canvas.Top="160"
+                                         Fill="#B89B4A"
+                                         Opacity="0.38"/>
+
+                                <Ellipse Width="4"
+                                         Height="4"
+                                         Canvas.Left="1510"
+                                         Canvas.Top="520"
+                                         Fill="#4FC3F7"
+                                         Opacity="0.35"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="1900"
+                                         Canvas.Top="420"
+                                         Fill="#FFFFFF"
+                                         Opacity="0.2"/>
+
+                                <Ellipse Width="5"
+                                         Height="5"
+                                         Canvas.Left="2140"
+                                         Canvas.Top="180"
+                                         Fill="#B89B4A"
+                                         Opacity="0.35"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="2420"
+                                         Canvas.Top="600"
+                                         Fill="#4FC3F7"
+                                         Opacity="0.4"/>
+
+                                <Ellipse Width="4"
+                                         Height="4"
+                                         Canvas.Left="2750"
+                                         Canvas.Top="850"
+                                         Fill="#FFFFFF"
+                                         Opacity="0.18"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="680"
+                                         Canvas.Top="1100"
+                                         Fill="#B89B4A"
+                                         Opacity="0.3"/>
+
+                                <Ellipse Width="4"
+                                         Height="4"
+                                         Canvas.Left="1650"
+                                         Canvas.Top="1150"
+                                         Fill="#4FC3F7"
+                                         Opacity="0.3"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="2350"
+                                         Canvas.Top="1050"
+                                         Fill="#FFFFFF"
+                                         Opacity="0.2"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="360"
+                                         Canvas.Top="760"
+                                         Fill="#4FC3F7"
+                                         Opacity="0.25"/>
+
+                                <Ellipse Width="4"
+                                         Height="4"
+                                         Canvas.Left="920"
+                                         Canvas.Top="1180"
+                                         Fill="#B89B4A"
+                                         Opacity="0.25"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="1320"
+                                         Canvas.Top="740"
+                                         Fill="#FFFFFF"
+                                         Opacity="0.18"/>
+
+                                <Ellipse Width="4"
+                                         Height="4"
+                                         Canvas.Left="2070"
+                                         Canvas.Top="930"
+                                         Fill="#4FC3F7"
+                                         Opacity="0.25"/>
+
+                                <Ellipse Width="3"
+                                         Height="3"
+                                         Canvas.Left="2680"
+                                         Canvas.Top="500"
+                                         Fill="#B89B4A"
+                                         Opacity="0.28"/>
+
+                        </Canvas>
+
+                        <Rectangle Width="3000"
+                                   Height="2000"
+                                   Fill="#000000"
+                                   Opacity="0.05"/>
+
+                </Canvas>
+
                 <Grid x:Name="LoginScreen"
-                      Background="#080808"
+                      Background="Transparent"
                       Panel.ZIndex="10">
 
-                        <Border Width="430"
+                        <Border Width="450"
                                 Padding="45"
-                                Background="#111111"
+                                Background="{StaticResource PanelBackground}"
                                 BorderBrush="#B89B4A"
-                                BorderThickness="2"
-                                CornerRadius="8"
+                                BorderThickness="1"
+                                CornerRadius="10"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
 
@@ -26,100 +908,96 @@
 
                                         <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Center"
-                                                    Margin="0,0,0,35">
+                                                    Margin="0,0,0,8">
 
                                                 <TextBlock Text="T"
                                                            Foreground="Cyan"
-                                                           FontSize="52"
-                                                           FontWeight="Bold"/>
+                                                           Style="{StaticResource LogoLetterStyle}"/>
 
                                                 <TextBlock Text="E"
                                                            Foreground="Yellow"
-                                                           FontSize="52"
-                                                           FontWeight="Bold"/>
+                                                           Style="{StaticResource LogoLetterStyle}"/>
 
                                                 <TextBlock Text="T"
                                                            Foreground="Purple"
-                                                           FontSize="52"
-                                                           FontWeight="Bold"/>
+                                                           Style="{StaticResource LogoLetterStyle}"/>
 
                                                 <TextBlock Text="R"
                                                            Foreground="Green"
-                                                           FontSize="52"
-                                                           FontWeight="Bold"/>
+                                                           Style="{StaticResource LogoLetterStyle}"/>
 
                                                 <TextBlock Text="I"
                                                            Foreground="Red"
-                                                           FontSize="52"
-                                                           FontWeight="Bold"/>
+                                                           Style="{StaticResource LogoLetterStyle}"/>
 
                                                 <TextBlock Text="S"
                                                            Foreground="Blue"
-                                                           FontSize="52"
-                                                           FontWeight="Bold"/>
+                                                           Style="{StaticResource LogoLetterStyle}"/>
 
                                         </StackPanel>
 
+                                        <TextBlock Text="BLOCK DROP"
+                                                   Foreground="#B89B4A"
+                                                   FontSize="12"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,35"/>
+
                                         <TextBlock Text="LOGIN"
                                                    Foreground="White"
-                                                   FontSize="24"
+                                                   FontSize="25"
                                                    FontWeight="Bold"
                                                    HorizontalAlignment="Center"
                                                    Margin="0,0,0,25"/>
 
                                         <TextBlock Text="USERNAME"
-                                                   Foreground="Gray"
-                                                   FontSize="12"
+                                                   Foreground="#777777"
+                                                   FontSize="11"
+                                                   FontWeight="Bold"
                                                    HorizontalAlignment="Center"
-                                                   Margin="0,0,0,5"/>
+                                                   Margin="0,0,0,6"/>
 
                                         <TextBox x:Name="LoginUsernameTextBox"
-                                                 Width="220"
-                                                 Height="32"
+                                                 Width="240"
+                                                 Height="34"
                                                  FontSize="16"
                                                  HorizontalContentAlignment="Center"
-                                                 Margin="0,0,0,15"/>
+                                                 Margin="0,0,0,16"/>
 
                                         <TextBlock Text="PASSWORD"
-                                                   Foreground="Gray"
-                                                   FontSize="12"
+                                                   Foreground="#777777"
+                                                   FontSize="11"
+                                                   FontWeight="Bold"
                                                    HorizontalAlignment="Center"
-                                                   Margin="0,0,0,5"/>
+                                                   Margin="0,0,0,6"/>
 
                                         <PasswordBox x:Name="LoginPasswordBox"
-                                                     Width="220"
-                                                     Height="32"
+                                                     Width="240"
+                                                     Height="34"
                                                      FontSize="16"
                                                      HorizontalContentAlignment="Center"
                                                      Margin="0,0,0,25"/>
 
                                         <Button Content="LOGIN"
-                                                Width="220"
-                                                Height="40"
-                                                FontSize="17"
-                                                FontWeight="Bold"
-                                                Margin="0,0,0,10"
+                                                Style="{StaticResource MenuButtonStyle}"
                                                 Click="LoginButton_Click"/>
 
                                         <Button Content="REGISTER"
-                                                Width="220"
-                                                Height="40"
-                                                FontSize="17"
-                                                Margin="0,0,0,10"
+                                                Style="{StaticResource MenuButtonStyle}"
                                                 Click="RegisterButton_Click"/>
 
                                         <Button Content="EXIT"
-                                                Width="220"
-                                                Height="40"
-                                                FontSize="17"
+                                                Style="{StaticResource MenuButtonStyle}"
                                                 Click="ExitButton_Click"/>
 
                                 </StackPanel>
+
                         </Border>
+
                 </Grid>
 
                 <Grid x:Name="MainMenuScreen"
-                      Background="#080808"
+                      Background="Transparent"
                       Visibility="Collapsed"
                       Panel.ZIndex="3">
 
@@ -128,84 +1006,146 @@
 
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Center"
-                                            Margin="0,0,0,45">
+                                            Margin="0,0,0,8">
 
                                         <TextBlock Text="T"
                                                    Foreground="Cyan"
-                                                   FontSize="64"
-                                                   FontWeight="Bold"/>
+                                                   Style="{StaticResource LogoLetterStyle}"/>
 
                                         <TextBlock Text="E"
                                                    Foreground="Yellow"
-                                                   FontSize="64"
-                                                   FontWeight="Bold"/>
+                                                   Style="{StaticResource LogoLetterStyle}"/>
 
                                         <TextBlock Text="T"
                                                    Foreground="Purple"
-                                                   FontSize="64"
-                                                   FontWeight="Bold"/>
+                                                   Style="{StaticResource LogoLetterStyle}"/>
 
                                         <TextBlock Text="R"
                                                    Foreground="Green"
-                                                   FontSize="64"
-                                                   FontWeight="Bold"/>
+                                                   Style="{StaticResource LogoLetterStyle}"/>
 
                                         <TextBlock Text="I"
                                                    Foreground="Red"
-                                                   FontSize="64"
-                                                   FontWeight="Bold"/>
+                                                   Style="{StaticResource LogoLetterStyle}"/>
 
                                         <TextBlock Text="S"
                                                    Foreground="Blue"
-                                                   FontSize="64"
-                                                   FontWeight="Bold"/>
+                                                   Style="{StaticResource LogoLetterStyle}"/>
 
                                 </StackPanel>
 
+                                <TextBlock Text="BLOCK DROP"
+                                           Foreground="#B89B4A"
+                                           FontSize="13"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,30"/>
+
                                 <TextBlock x:Name="WelcomeText"
                                            Text="Welcome"
-                                           Foreground="Gray"
-                                           FontSize="17"
+                                           Foreground="#888888"
+                                           FontSize="16"
                                            HorizontalAlignment="Center"
                                            Margin="0,0,0,25"/>
 
                                 <Button Content="PLAY"
-                                        Width="200"
-                                        Height="45"
-                                        Margin="0,5"
-                                        FontSize="19"
-                                        FontWeight="Bold"
+                                        Style="{StaticResource MenuButtonStyle}"
                                         Click="PlayButton_Click"/>
 
                                 <Button Content="OPTIONS"
-                                        Width="200"
-                                        Height="45"
-                                        Margin="0,5"
-                                        FontSize="19"
+                                        Style="{StaticResource MenuButtonStyle}"
                                         Click="OptionsButton_Click"/>
 
                                 <Button Content="HIGHSCORES"
-                                        Width="200"
-                                        Height="45"
-                                        Margin="0,5"
-                                        FontSize="19"
+                                        Style="{StaticResource MenuButtonStyle}"
                                         Click="HighScoresButton_Click"/>
 
                                 <Button Content="LOGOUT"
-                                        Width="200"
-                                        Height="45"
-                                        Margin="0,5"
-                                        FontSize="19"
+                                        Style="{StaticResource MenuButtonStyle}"
                                         Click="LogoutButton_Click"/>
 
                                 <Button Content="EXIT"
-                                        Width="200"
-                                        Height="45"
-                                        Margin="0,5"
-                                        FontSize="19"
+                                        Style="{StaticResource MenuButtonStyle}"
                                         Click="ExitButton_Click"/>
 
                         </StackPanel>
+
+                </Grid>
+
+                <Grid x:Name="GameModeScreen"
+                      Background="Transparent"
+                      Visibility="Collapsed"
+                      Panel.ZIndex="4">
+
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+
+                                <TextBlock Text="GAME MODE"
+                                           Style="{StaticResource ScreenTitleStyle}"
+                                           Margin="0,0,0,8"/>
+
+                                <TextBlock Text="SELECT YOUR CHALLENGE"
+                                           Foreground="#B89B4A"
+                                           FontSize="12"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,30"/>
+
+                                <Button Content="CLASSIC"
+                                        Style="{StaticResource MenuButtonStyle}"
+                                        Height="52"
+                                        FontSize="19"
+                                        Click="ClassicModeButton_Click"/>
+
+                                <TextBlock Text="Standard Tetris"
+                                           Foreground="#777777"
+                                           FontSize="12"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,10"/>
+
+                                <Button Content="ENDLESS"
+                                        Style="{StaticResource MenuButtonStyle}"
+                                        Height="52"
+                                        FontSize="19"
+                                        Click="EndlessModeButton_Click"/>
+
+                                <TextBlock Text="Survive as long as you can"
+                                           Foreground="#777777"
+                                           FontSize="12"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,10"/>
+
+                                <Button Content="SPRINT"
+                                        Style="{StaticResource MenuButtonStyle}"
+                                        Height="52"
+                                        FontSize="19"
+                                        Click="SprintModeButton_Click"/>
+
+                                <TextBlock Text="Clear 40 lines as fast as possible"
+                                           Foreground="#777777"
+                                           FontSize="12"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,10"/>
+
+                                <Button Content="TIME ATTACK"
+                                        Style="{StaticResource MenuButtonStyle}"
+                                        Height="52"
+                                        FontSize="19"
+                                        Click="TimeAttackModeButton_Click"/>
+
+                                <TextBlock Text="Score as much as you can in 2 minutes"
+                                           Foreground="#777777"
+                                           FontSize="12"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,15"/>
+
+                                <Button Content="BACK"
+                                        Style="{StaticResource MenuButtonStyle}"
+                                        Margin="0,10,0,0"
+                                        Click="GameModeBackButton_Click"/>
+
+                        </StackPanel>
+
                 </Grid>
 
                 <Grid x:Name="GameScreen"
@@ -215,7 +1155,9 @@
                       RenderTransformOrigin="0.5,0.5">
 
                         <Grid.RenderTransform>
+
                                 <TranslateTransform x:Name="GameScreenTransform"/>
+
                         </Grid.RenderTransform>
 
                         <Grid Width="620"
@@ -228,6 +1170,12 @@
                                         BorderThickness="2"
                                         CornerRadius="5"
                                         Padding="4">
+                                        <Border.Effect>
+                                                <DropShadowEffect Color="#B89B4A"
+                                                                  BlurRadius="22"
+                                                                  ShadowDepth="0"
+                                                                  Opacity="0.32"/>
+                                        </Border.Effect>
 
                                         <UniformGrid x:Name="GameBoard"
                                                      Rows="20"
@@ -238,21 +1186,18 @@
 
                                 <StackPanel HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
-                                            Width="250"
-                                            Margin="0,0,0,0">
+                                            Width="250">
 
-                                        <Border Background="#111111"
-                                                BorderBrush="#B89B4A"
-                                                BorderThickness="2"
-                                                CornerRadius="5"
+                                        <Border Style="{StaticResource PanelStyle}"
                                                 Padding="15"
                                                 Margin="0,0,0,15">
 
                                                 <StackPanel>
 
                                                         <TextBlock Text="PLAYER"
-                                                                   Foreground="Gray"
-                                                                   FontSize="12"
+                                                                   Foreground="#777777"
+                                                                   FontSize="11"
+                                                                   FontWeight="Bold"
                                                                    HorizontalAlignment="Center"
                                                                    Margin="0,0,0,5"/>
 
@@ -267,18 +1212,48 @@
 
                                         </Border>
 
-                                        <Border Background="#111111"
-                                                BorderBrush="#B89B4A"
-                                                BorderThickness="2"
-                                                CornerRadius="5"
+                                        <Border Style="{StaticResource PanelStyle}"
+                                                Padding="15"
+                                                Margin="0,0,0,15">
+
+                                                <StackPanel>
+
+                                                        <TextBlock Text="MODE"
+                                                                   Foreground="#777777"
+                                                                   FontSize="11"
+                                                                   FontWeight="Bold"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,0,0,5"/>
+
+                                                        <TextBlock x:Name="GameModeText"
+                                                                   Text="CLASSIC"
+                                                                   Foreground="White"
+                                                                   FontSize="20"
+                                                                   FontWeight="Bold"
+                                                                   HorizontalAlignment="Center"/>
+
+                                                        <TextBlock x:Name="ModeInfoText"
+                                                                   Text=""
+                                                                   Foreground="#B89B4A"
+                                                                   FontSize="13"
+                                                                   FontWeight="Bold"
+                                                                   HorizontalAlignment="Center"
+                                                                   Margin="0,5,0,0"/>
+
+                                                </StackPanel>
+
+                                        </Border>
+
+                                        <Border Style="{StaticResource PanelStyle}"
                                                 Padding="12"
                                                 Margin="0,0,0,15">
 
                                                 <StackPanel>
 
                                                         <TextBlock Text="NEXT"
-                                                                   Foreground="Gray"
-                                                                   FontSize="12"
+                                                                   Foreground="#777777"
+                                                                   FontSize="11"
+                                                                   FontWeight="Bold"
                                                                    HorizontalAlignment="Center"
                                                                    Margin="0,0,0,8"/>
 
@@ -300,18 +1275,16 @@
 
                                         </Border>
 
-                                        <Border Background="#111111"
-                                                BorderBrush="#B89B4A"
-                                                BorderThickness="2"
-                                                CornerRadius="5"
+                                        <Border Style="{StaticResource PanelStyle}"
                                                 Padding="15"
                                                 Margin="0,0,0,15">
 
                                                 <StackPanel>
 
                                                         <TextBlock Text="SCORE"
-                                                                   Foreground="Gray"
-                                                                   FontSize="12"
+                                                                   Foreground="#777777"
+                                                                   FontSize="11"
+                                                                   FontWeight="Bold"
                                                                    HorizontalAlignment="Center"
                                                                    Margin="0,0,0,5"/>
 
@@ -326,17 +1299,18 @@
 
                                         </Border>
 
-                                        <Border Background="#111111"
+                                        <Border Background="#0D0D0D"
                                                 BorderBrush="#333333"
                                                 BorderThickness="1"
-                                                CornerRadius="5"
+                                                CornerRadius="8"
                                                 Padding="15">
 
                                                 <StackPanel>
 
                                                         <TextBlock Text="CONTROLS"
-                                                                   Foreground="Gray"
-                                                                   FontSize="12"
+                                                                   Foreground="#777777"
+                                                                   FontSize="11"
+                                                                   FontWeight="Bold"
                                                                    HorizontalAlignment="Center"
                                                                    Margin="0,0,0,10"/>
 
@@ -376,23 +1350,73 @@
 
                                 </StackPanel>
 
+                                <Grid Width="320"
+                                      Height="720"
+                                      HorizontalAlignment="Left"
+                                      IsHitTestVisible="False"
+                                      Panel.ZIndex="1">
+
+                                        <TextBlock x:Name="ScorePopupText"
+                                                   Text="+100"
+                                                   Foreground="#B89B4A"
+                                                   FontSize="34"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Visibility="Collapsed"
+                                                   Opacity="0">
+
+                                                <TextBlock.RenderTransform>
+
+                                                        <ScaleTransform x:Name="ScorePopupScale"
+                                                                        ScaleX="1"
+                                                                        ScaleY="1"/>
+
+                                                </TextBlock.RenderTransform>
+
+                                        </TextBlock>
+
+                                        <TextBlock x:Name="ComboText"
+                                                   Text="COMBO x2!"
+                                                   Foreground="White"
+                                                   FontSize="28"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,75,0,0"
+                                                   Visibility="Collapsed"
+                                                   Opacity="0">
+
+                                                <TextBlock.RenderTransform>
+
+                                                        <ScaleTransform x:Name="ComboScale"
+                                                                        ScaleX="1"
+                                                                        ScaleY="1"/>
+
+                                                </TextBlock.RenderTransform>
+
+                                        </TextBlock>
+
+                                </Grid>
+
                                 <Grid x:Name="GameOverScreen"
                                       Background="#DD000000"
                                       Visibility="Collapsed"
                                       Panel.ZIndex="2">
 
-                                        <Border Width="360"
+                                        <Border Width="380"
                                                 Padding="30"
-                                                Background="#111111"
+                                                Background="{StaticResource PanelBackground}"
                                                 BorderBrush="#B89B4A"
-                                                BorderThickness="2"
-                                                CornerRadius="6"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center">
 
                                                 <StackPanel>
 
-                                                        <TextBlock Text="GAME OVER"
+                                                        <TextBlock x:Name="GameOverTitleText"
+                                                                   Text="GAME OVER"
                                                                    Foreground="White"
                                                                    FontSize="36"
                                                                    FontWeight="Bold"
@@ -408,28 +1432,22 @@
 
                                                         <TextBlock x:Name="GameOverPlayerText"
                                                                    Text="Player:"
-                                                                   Foreground="Gray"
+                                                                   Foreground="#777777"
                                                                    FontSize="16"
                                                                    HorizontalAlignment="Center"
                                                                    Margin="0,0,0,25"/>
 
                                                         <Button Content="SAVE SCORE"
-                                                                Width="180"
-                                                                Height="40"
-                                                                FontSize="16"
+                                                                Style="{StaticResource MenuButtonStyle}"
                                                                 Click="SaveScoreButton_Click"/>
 
                                                         <Button Content="RESTART"
-                                                                Width="180"
-                                                                Height="40"
-                                                                FontSize="16"
+                                                                Style="{StaticResource MenuButtonStyle}"
                                                                 Margin="0,8,0,0"
                                                                 Click="RestartButton_Click"/>
 
                                                         <Button Content="MAIN MENU"
-                                                                Width="180"
-                                                                Height="40"
-                                                                FontSize="16"
+                                                                Style="{StaticResource MenuButtonStyle}"
                                                                 Margin="0,8,0,0"
                                                                 Click="MainMenuButton_Click"/>
 
@@ -444,12 +1462,12 @@
                                       Visibility="Collapsed"
                                       Panel.ZIndex="4">
 
-                                        <Border Width="350"
+                                        <Border Width="370"
                                                 Padding="30"
-                                                Background="#111111"
+                                                Background="{StaticResource PanelBackground}"
                                                 BorderBrush="#B89B4A"
-                                                BorderThickness="2"
-                                                CornerRadius="6"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center">
 
@@ -463,24 +1481,15 @@
                                                                    Margin="0,0,0,25"/>
 
                                                         <Button Content="RESUME"
-                                                                Width="180"
-                                                                Height="40"
-                                                                FontSize="18"
-                                                                Margin="0,5"
+                                                                Style="{StaticResource MenuButtonStyle}"
                                                                 Click="ResumeButton_Click"/>
 
                                                         <Button Content="MAIN MENU"
-                                                                Width="180"
-                                                                Height="40"
-                                                                FontSize="18"
-                                                                Margin="0,5"
+                                                                Style="{StaticResource MenuButtonStyle}"
                                                                 Click="PauseMainMenuButton_Click"/>
 
                                                         <Button Content="EXIT"
-                                                                Width="180"
-                                                                Height="40"
-                                                                FontSize="18"
-                                                                Margin="0,5"
+                                                                Style="{StaticResource MenuButtonStyle}"
                                                                 Click="PauseExitButton_Click"/>
 
                                                 </StackPanel>
@@ -490,10 +1499,11 @@
                                 </Grid>
 
                         </Grid>
+
                 </Grid>
 
                 <Grid x:Name="OptionsScreen"
-                      Background="#080808"
+                      Background="Transparent"
                       Visibility="Collapsed"
                       Panel.ZIndex="4">
 
@@ -501,76 +1511,112 @@
                                     VerticalAlignment="Center">
 
                                 <TextBlock Text="OPTIONS"
-                                           Foreground="White"
-                                           FontSize="36"
+                                           Style="{StaticResource ScreenTitleStyle}"
+                                           Margin="0,0,0,10"/>
+
+                                <TextBlock Text="SETTINGS COMING SOON"
+                                           Foreground="#B89B4A"
+                                           FontSize="12"
                                            FontWeight="Bold"
                                            HorizontalAlignment="Center"
-                                           Margin="0,0,0,30"/>
+                                           Margin="0,0,0,25"/>
 
                                 <TextBlock Text="Options will be added later."
-                                           Foreground="Gray"
+                                           Foreground="#777777"
                                            FontSize="16"
                                            HorizontalAlignment="Center"
                                            Margin="0,0,0,30"/>
 
                                 <Button Content="BACK"
-                                        Width="160"
-                                        Height="40"
-                                        FontSize="18"
+                                        Style="{StaticResource MenuButtonStyle}"
                                         Click="BackToMenuButton_Click"/>
 
                         </StackPanel>
+
                 </Grid>
 
                 <Grid x:Name="HighScoresScreen"
-                      Background="#080808"
+                      Background="Transparent"
                       Visibility="Collapsed"
                       Panel.ZIndex="4">
 
-                        <Border Width="400"
+                        <Border Width="500"
                                 Padding="30"
-                                Background="#111111"
+                                Background="{StaticResource PanelBackground}"
                                 BorderBrush="#B89B4A"
-                                BorderThickness="2"
-                                CornerRadius="6"
+                                BorderThickness="1"
+                                CornerRadius="8"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
 
                                 <StackPanel>
 
                                         <TextBlock Text="HIGHSCORES"
-                                                   Foreground="White"
+                                                   Style="{StaticResource ScreenTitleStyle}"
                                                    FontSize="32"
+                                                   Margin="0,0,0,10"/>
+
+                                        <TextBlock x:Name="PlayerHighScoreText"
+                                                   Text="YOUR BEST: 0    SCORES: 0"
+                                                   Foreground="#B89B4A"
+                                                   FontSize="14"
                                                    FontWeight="Bold"
                                                    HorizontalAlignment="Center"
-                                                   Margin="0,0,0,25"/>
+                                                   Margin="0,0,0,20"/>
+
+                                        <Grid Margin="8,0,8,5">
+
+                                                <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="55"/>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Text="RANK"
+                                                           Foreground="#777777"
+                                                           FontSize="11"
+                                                           FontWeight="Bold"
+                                                           Grid.Column="0"/>
+
+                                                <TextBlock Text="PLAYER"
+                                                           Foreground="#777777"
+                                                           FontSize="11"
+                                                           FontWeight="Bold"
+                                                           Grid.Column="1"/>
+
+                                                <TextBlock Text="SCORE"
+                                                           Foreground="#777777"
+                                                           FontSize="11"
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Right"
+                                                           Grid.Column="2"/>
+
+                                        </Grid>
 
                                         <StackPanel x:Name="HighScoresList"
                                                     Margin="0,0,0,25"/>
 
                                         <Button Content="BACK"
-                                                Width="160"
-                                                Height="40"
-                                                FontSize="18"
-                                                HorizontalAlignment="Center"
+                                                Style="{StaticResource MenuButtonStyle}"
                                                 Click="BackToMenuButton_Click"/>
 
                                 </StackPanel>
 
                         </Border>
+
                 </Grid>
 
                 <Grid x:Name="RegisterScreen"
-                      Background="#080808"
+                      Background="Transparent"
                       Visibility="Collapsed"
                       Panel.ZIndex="5">
 
-                        <Border Width="430"
+                        <Border Width="450"
                                 Padding="45"
-                                Background="#111111"
+                                Background="{StaticResource PanelBackground}"
                                 BorderBrush="#B89B4A"
-                                BorderThickness="2"
-                                CornerRadius="8"
+                                BorderThickness="1"
+                                CornerRadius="10"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
 
@@ -584,49 +1630,47 @@
                                                    Margin="0,0,0,30"/>
 
                                         <TextBlock Text="USERNAME"
-                                                   Foreground="Gray"
-                                                   FontSize="12"
+                                                   Foreground="#777777"
+                                                   FontSize="11"
+                                                   FontWeight="Bold"
                                                    HorizontalAlignment="Center"
-                                                   Margin="0,0,0,5"/>
+                                                   Margin="0,0,0,6"/>
 
                                         <TextBox x:Name="RegisterUsernameTextBox"
-                                                 Width="220"
-                                                 Height="32"
+                                                 Width="240"
+                                                 Height="34"
                                                  MaxLength="20"
                                                  HorizontalContentAlignment="Center"
                                                  FontSize="16"
-                                                 Margin="0,0,0,15"/>
+                                                 Margin="0,0,0,16"/>
 
                                         <TextBlock Text="PASSWORD"
-                                                   Foreground="Gray"
-                                                   FontSize="12"
+                                                   Foreground="#777777"
+                                                   FontSize="11"
+                                                   FontWeight="Bold"
                                                    HorizontalAlignment="Center"
-                                                   Margin="0,0,0,5"/>
+                                                   Margin="0,0,0,6"/>
 
                                         <PasswordBox x:Name="RegisterPasswordBox"
-                                                     Width="220"
-                                                     Height="32"
+                                                     Width="240"
+                                                     Height="34"
                                                      FontSize="16"
                                                      Margin="0,0,0,25"/>
 
                                         <Button Content="REGISTER"
-                                                Width="220"
-                                                Height="40"
-                                                FontSize="17"
-                                                FontWeight="Bold"
-                                                Margin="0,0,0,10"
+                                                Style="{StaticResource MenuButtonStyle}"
                                                 Click="CreateAccountButton_Click"/>
 
                                         <Button Content="BACK"
-                                                Width="220"
-                                                Height="40"
-                                                FontSize="17"
+                                                Style="{StaticResource MenuButtonStyle}"
                                                 Click="BackToLoginButton_Click"/>
 
                                 </StackPanel>
 
                         </Border>
+
                 </Grid>
 
         </Grid>
+
 </Window>

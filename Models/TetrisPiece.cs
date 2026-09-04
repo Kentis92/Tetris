@@ -8,7 +8,7 @@ public enum TetrominoType
     S,
     Z,
     J,
-    L
+    L,
 }
 
 public class TetrisPiece
@@ -20,54 +20,65 @@ public class TetrisPiece
 
     public TetrominoType Type { get; }
 
+    public int RotationState { get; set; }
+
     public TetrisPiece(TetrominoType type)
     {
         Type = type;
+        RotationState = 0;
 
         Shape = type switch
         {
             TetrominoType.I => new int[,]
             {
-                { 1, 1, 1, 1 }
+                { 0, 0, 0, 0 },
+                { 1, 1, 1, 1 },
+                { 0, 0, 0, 0 },
+                { 0, 0, 0, 0 },
             },
 
             TetrominoType.O => new int[,]
             {
                 { 1, 1 },
-                { 1, 1 }
+                { 1, 1 },
             },
 
             TetrominoType.T => new int[,]
             {
                 { 0, 1, 0 },
-                { 1, 1, 1 }
+                { 1, 1, 1 },
+                { 0, 0, 0 },
             },
 
             TetrominoType.S => new int[,]
             {
                 { 0, 1, 1 },
-                { 1, 1, 0 }
+                { 1, 1, 0 },
+                { 0, 0, 0 },
             },
 
             TetrominoType.Z => new int[,]
             {
                 { 1, 1, 0 },
-                { 0, 1, 1 }
+                { 0, 1, 1 },
+                { 0, 0, 0 },
             },
 
             TetrominoType.J => new int[,]
             {
                 { 1, 0, 0 },
-                { 1, 1, 1 }
+                { 1, 1, 1 },
+                { 0, 0, 0 },
             },
 
             TetrominoType.L => new int[,]
             {
                 { 0, 0, 1 },
-                { 1, 1, 1 }
+                { 1, 1, 1 },
+                { 0, 0, 0 },
             },
 
-            _ => throw new ArgumentException("Ukjent brikke")
+            _ => throw new ArgumentException("Ukjent brikke"),
         };
 
         X = 3;
@@ -95,5 +106,6 @@ public class TetrisPiece
         }
 
         Shape = rotated;
+        RotationState = (RotationState + 1) % 4;
     }
 }

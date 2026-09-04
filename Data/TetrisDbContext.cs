@@ -1,4 +1,5 @@
 using System.IO;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Tetris.Models;
 
@@ -20,6 +21,22 @@ public class TetrisDbContext : DbContext
 
         string databasePath = Path.Combine(folder, "tetris.db");
 
-        optionsBuilder.UseSqlite($"Data Source={databasePath}");
+        SqliteConnectionStringBuilder connectionString = new()
+        {
+            DataSource = databasePath,
+            DefaultTimeout = 10,
+        };
+
+        optionsBuilder.UseSqlite(connectionString.ToString());
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    }
+
+    public void EnsureDatabaseCreated()
+    {
+        Database.EnsureCreated();
     }
 }
